@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГУНП в Дніпропетровській області</title>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0b0f1a;
+            --surface:   #111827;
+            --surface2:  #1a2235;
+            --surface3:  #1e2d45;
+            --border:    rgba(99,179,237,.15);
+            --accent:    #3b82f6;
+            --accent2:   #6366f1;
+            --accent-g:  linear-gradient(135deg,#3b82f6,#6366f1);
+            --text:      #e2e8f0;
+            --muted:     #8892a4;
+            --radius:    12px;
+            --glow:      0 0 30px rgba(59,130,246,.25);
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* === МОБІЛЬНА АДАПТАЦІЯ === */
+        @media (max-width: 640px) {
+            body { padding: 8px; }
+
+            /* Хедер — горизонтальний ряд, як на ПК, але компактніший */
+            .header > div {
+                padding: 8px !important;
+                gap: 6px !important;
+                justify-content: center !important;
+            }
+            .header > div img {
+                height: 110px !important;
+                width: auto !important;
+                max-width: 80px !important;
+                object-fit: contain !important;
+            }
+            .header > div video {
+                width: auto !important;
+                max-width: 50% !important;
+                flex: 1 !important;
+                margin: 4px 0 !important;
+            }
+
+            h1 { font-size: 22px !important; }
+            .subtitle { font-size: 13px !important; }
+
+            /* Навігаційні вкладки — великі, зручні для пальця */
+            .nav { gap: 8px; margin-top: 14px; }
+            .nav button {
+                min-width: calc(50% - 4px) !important;
+                flex: 1 1 calc(50% - 4px) !important;
+                padding: 16px 10px !important;
+                font-size: 15px !important;
+                font-weight: 600 !important;
+                line-height: 1.3;
+            }
+
+            /* Пошук */
+            .search {
+                font-size: 15px;
+                padding: 13px 14px;
+                margin: 14px 0;
+            }
+
+            /* Картки */
+            .card { padding: 14px 16px; margin-top: 12px; }
+            .card h2 { font-size: 17px !important; line-height: 1.4; }
+            .card > p { font-size: 14px !important; margin-top: 5px; }
+
+            /* Вміст карток */
+            .content { margin-top: 14px; }
+            .article { padding: 12px 14px; margin-top: 10px; }
+            .article h3 { font-size: 14px !important; line-height: 1.4; }
+            .article p { font-size: 14px !important; line-height: 1.6; }
+
+            /* Кнопки копіювання та PDF */
+            .copy-btn, .pdf-btn {
+                display: inline-block;
+                width: auto;
+                min-width: 48%;
+                text-align: center;
+                margin-right: 4px;
+                margin-top: 8px;
+                padding: 11px 10px;
+                font-size: 13px;
+            }
+        }
+
+        /* Планшети */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            body { padding: 14px; }
+            h1 { font-size: 26px !important; }
+            .header > div video { max-width: 60% !important; }
+            .nav button { min-width: 140px; font-size: 14px; }
+        }
+
+        /* ПК */
+        @media (min-width: 1025px) {
+            body { max-width: 1280px; margin: 0 auto; padding: 24px; }
+        }
+
+        /* Фоновий ефект */
+        body::before {
+            content:'';
+            position:fixed;
+            inset:0;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(59,130,246,.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(99,102,241,.10) 0%, transparent 60%);
+            pointer-events:none;
+            z-index:0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f1e35 0%, #1a2d4a 50%, #0f1e35 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            box-shadow: var(--glow), 0 4px 30px rgba(0,0,0,.5);
+            overflow: hidden;
+        }
+
+        .header::after {
+            content:'';
+            position:absolute;
+            top:0; left:0; right:0;
+            height:2px;
+            background: var(--accent-g);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #fff;
+        }
+
+        .subtitle {
+            margin-top: 10px;
+            font-size: 16px;
+            opacity: 0.8;
+            color: var(--muted);
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav button {
+            flex: 1;
+            min-width: 180px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface2);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 15px;
+            transition: all .2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav button::before {
+            content:'';
+            position:absolute;
+            inset:0;
+            background: var(--accent-g);
+            opacity:0;
+            transition: opacity .2s;
+        }
+
+        .nav button:hover::before { opacity: .15; }
+
+        .nav button:hover {
+            border-color: rgba(59,130,246,.4);
+            box-shadow: 0 0 15px rgba(59,130,246,.2);
+            transform: translateY(-1px);
+        }
+
+        .nav button.is-active,
+        .nav button:focus {
+            border-color: var(--accent);
+            background: rgba(59,130,246,.15);
+            box-shadow: 0 0 20px rgba(59,130,246,.3);
+            outline: none;
+        }
+
+        .search {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text);
+            box-sizing: border-box;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .search::placeholder { color: var(--muted); }
+
+        .search:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(59,130,246,.25);
+        }
+
+        .tab { display: none; position: relative; z-index: 1; }
+        .tab.active { display: block; }
+
+        .card {
+            background: var(--surface);
+            padding: 16px 20px;
+            margin-top: 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            transition: all .2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content:'';
+            position:absolute;
+            inset:0;
+            background: var(--accent-g);
+            opacity:0;
+            transition: opacity .2s;
+        }
+
+        .card:hover::before { opacity:.04; }
+
+        .card:hover {
+            border-color: rgba(59,130,246,.4);
+            box-shadow: 0 4px 20px rgba(59,130,246,.15);
+            transform: translateY(-1px);
+        }
+
+        .card h2 { color: #fff; font-size: 18px; }
+        .card > p { color: var(--muted); margin-top: 6px; font-size: 14px; }
+
+        .content {
+            display: none;
+            margin-top: 12px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .article {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            margin-top: 12px;
+            border-radius: 10px;
+            color: var(--text);
+        }
+
+        .article h3 {
+            color: #93c5fd;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .article p { color: #cbd5e1; font-size: 14px; line-height: 1.6; margin-top: 4px; }
+
+        .fabula-box {
+            background: rgba(59,130,246,.07);
+            border: 1px solid rgba(99,179,237,.35);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 6px;
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .article b { color: #e2e8f0; }
+        .article img { border-radius: 8px; border: 2px solid var(--border); }
+
+        .copy-btn,
+        .pdf-btn {
+            display: inline-block;
+            margin-top: 8px;
+            margin-right: 8px;
+            padding: 8px 14px;
+            border: 1px solid rgba(59,130,246,.4);
+            border-radius: 6px;
+            background: rgba(59,130,246,.15);
+            color: #93c5fd;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all .2s;
+        }
+
+        /* Куратори — загальний стиль для flex-блоків */
+        .curator-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: nowrap;
+        }
+        .curator-block img {
+            width: 280px;
+            min-width: 280px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            border: 2px solid var(--border);
+        }
+        .curator-block > div {
+            flex: 1;
+        }
+
+        /* Мобільні куратори — компактний горизонтальний вигляд */
+        @media (max-width: 640px) {
+            .curator-block {
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .curator-block img {
+                width: 110px !important;
+                min-width: 110px !important;
+                height: auto;
+            }
+            .curator-block > div p[style*="font-size:16px"] {
+                font-size: 13px !important;
+            }
+            .curator-block > div p[style*="font-size:18px"] {
+                font-size: 15px !important;
+            }
+            .curator-block > div p {
+                font-size: 13px !important;
+                line-height: 1.5;
+            }
+        }
+
+        /* === Акордеон статей (Адмін практика) === */
+        .article-accordion h3 {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 2px 0 6px 0;
+            color: #93c5fd;
+            transition: color .2s;
+        }
+        .article-accordion h3:hover { color: #60a5fa; }
+        .article-accordion h3 .arr {
+            flex-shrink: 0;
+            font-size: 18px;
+            transition: transform .25s;
+            color: #4b87d8;
+        }
+        .article-accordion h3.open .arr { transform: rotate(90deg); }
+        .article-body {
+            display: none;
+            margin-top: 6px;
+        }
+        .article-body.open { display: block; }
+
+        /* === LIGHTBOX для фото кураторів === */
+        #photo-lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            backdrop-filter: blur(4px);
+        }
+        #photo-lightbox.open { display: flex; animation: lbFadeIn .2s ease; }
+        @keyframes lbFadeIn { from { opacity:0; } to { opacity:1; } }
+        #photo-lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 0 60px rgba(59,130,246,.4), 0 20px 60px rgba(0,0,0,.8);
+            animation: lbZoomIn .25s cubic-bezier(.34,1.56,.64,1);
+            object-fit: contain;
+        }
+        @keyframes lbZoomIn {
+            from { transform: scale(.7); opacity:0; }
+            to   { transform: scale(1);  opacity:1; }
+        }
+        #photo-lightbox-close {
+            position: fixed;
+            top: 18px; right: 22px;
+            color: #fff;
+            font-size: 38px;
+            cursor: pointer;
+            opacity: .75;
+            transition: opacity .15s, transform .15s;
+            z-index: 10000;
+            line-height: 1;
+        }
+        #photo-lightbox-close:hover { opacity: 1; transform: scale(1.15); }
+        .curator-block img {
+            cursor: zoom-in;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .curator-block img:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 20px rgba(59,130,246,.4);
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+
+<body>
+
+<!-- LIGHTBOX для фото кураторів -->
+<div id="photo-lightbox" onclick="closeLightbox()">
+    <span id="photo-lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="photo-lightbox-img" src="" alt="">
+</div>
+
+<!-- Фіксована кнопка входу у верхньому правому куті -->
+<button onclick="openCabinet()" id="cabinet-nav-btn" style="
+    position:fixed;top:16px;right:16px;z-index:5000;
+    padding:10px 18px;
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+    border:none;border-radius:10px;
+    color:#fff;font-size:14px;font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 20px rgba(59,130,246,.45);
+    letter-spacing:.3px;
+    transition:opacity .2s,transform .2s;
+    display:flex;align-items:center;gap:7px;
+" onmouseover="this.style.opacity='.85';this.style.transform='scale(1.04)'"
+   onmouseout="this.style.opacity='1';this.style.transform='scale(1)'">
+    🔐 Вхід
+</button>
+
+<div class="header">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;">
+        <img src="imeg1.png" style="height:270px;width:200px;object-fit:contain;border-radius:8px;">
+        <video autoplay muted playsinline style="width:520px;max-width:55%;border-radius:10px;margin:20px 0;">
+            <source src="video.mp4" type="video/mp4">
+        </video>
+        <img src="imeg2.png" style="height:310px;width:230px;object-fit:contain;border-radius:8px;">
+    </div>
+</div>
+
+<div class="nav">
+    <button onclick="openTab('home')">Головна</button>
+    <button onclick="openTab('adminPractice')">Адміністративна практика</button>
+    <button onclick="openTab('policeAlgorithms')">Нормативна база</button>
+    <button onclick="openTab('stateLeadership')">Керівництво</button>
+    <button onclick="openTab('templates')">Шаблони документів</button>
+    <button onclick="openTab('positivePractices')">Впроваджені позитивні практики</button>
+    <button onclick="openTab('curators')">Куратори підрозділів</button>
+    <button onclick="openTab('appeal')">📩 Подати звернення</button>
+</div>
+
+<input class="search" id="search" placeholder="Пошук: КУпАП, 121, алгоритм, НПА, МВС, Національна поліція...">
+
+<div id="home" class="tab active searchable">
+    <div class="card">
+        <h2>Головна сторінка</h2>
+        <p>Поліцейськими головної інспекції ГУНП в Дніпропетровській області створено внутрішній цифровий помічник, що забезпечує швидкий та зручний доступ до основних законодавчих актів, алгоритмів дій, шаблонів документів, пам'яток та інших службових матеріалів.</p>
+        <div class="content" style="display:block;">
+            <div style="text-align:center;margin-top:14px;">
+                <img src="ger.png" style="max-width:260px;width:100%;border-radius:12px;border:2px solid rgba(99,179,237,.2);box-shadow:0 0 30px rgba(59,130,246,.2);">
+            </div>
+            <div style="text-align:center;margin-top:18px;">
+                <a class="copy-btn" href="Довідник_територіальні_підрозділи_області.docx" download style="font-size:15px;padding:12px 24px;">📚 Довідник територіальних підрозділів області</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="adminPractice" class="tab searchable">
+
+    <!-- ДОРОЖНІЙ РУХ -->
+    <div class="card" onclick="toggle(this)">
+        <h2>🚗 Дорожній рух</h2>
+        <p>Статті КУпАП: 121, 122, 123, 124, 126, 127, 128, 130 (з частинами, санкціями, вилученням посвідчення та затриманням ТЗ)</p>
+        <div class="content">
+
+            <div class="article">
+                <h3>Стаття 121 КУпАП — Порушення правил технічної експлуатації транспортних засобів та інших вимог безпеки</h3>
+                <p><b>Частина 1:</b> Порушення правил технічної експлуатації транспортного засобу, користування ним, або правил технічного контролю (несправне обладнання, відсутність обов'язкового оснащення тощо).</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — попередження або штраф 85–170 грн; ч.2 — штраф 170–340 грн.</p>
+                <p style="color:#94a3b8;"><b>🚗 Затримання ТЗ (ст. 265-1 КУпАП):</b> якщо технічна несправність загрожує безпеці дорожнього руху — затримання ТЗ до усунення несправності.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula121_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, технічний стан якого не відповідав встановленим вимогам, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula121_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula121_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___, який протягом року вже притягувався до відповідальності за ст. 121 КУпАП, керував транспортним засобом ___, н.з. ___, технічний стан якого не відповідав встановленим вимогам, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula121_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> <b>ч.1, 2</b> — органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 122 КУпАП — Перевищення встановлених швидкостей або порушення інших правил безпеки дорожнього руху</h3>
+                <p><b>Частина 1:</b> Перевищення встановленої швидкості руху від 10 до 20 км/год або порушення інших правил безпеки.</p>
+                <p><b>Частина 2:</b> Перевищення від 20 до 50 км/год.</p>
+                <p><b>Частина 3:</b> Перевищення більш ніж на 50 км/год або проїзд на заборонний сигнал світлофора, на заборонний жест регулювальника.</p>
+                <p><b>Частина 4:</b> Порушення правил дорожнього руху водіями транспортних засобів, що не є механічними.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — попередження або штраф 255 грн; ч.2 — штраф 510 грн; ч.3 — штраф 850–1 700 грн або позбавлення права керування на 6 міс.–1 рік; ч.4 — попередження або штраф 51–85 грн.</p>
+                <p style="color:#f87171;"><b>🪪 Вилучення посвідчення (ч.3, ст. 265 КУпАП):</b> при перевищенні понад 50 км/год або проїзді на заборонний сигнал — обов'язкове вилучення посвідчення водія до розгляду справи.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula122_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та перевищив встановлену швидкість руху (___ км/год при дозволених ___ км/год), тобто на ___ км/год.</div>
+                <button class="copy-btn" onclick="copyText('fabula122_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2):</b></p>
+                <div class="fabula-box" id="fabula122_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та перевищив встановлену швидкість руху (___ км/год при дозволених ___ км/год), тобто на ___ км/год, що становить від 20 до 50 км/год понад норму.</div>
+                <button class="copy-btn" onclick="copyText('fabula122_2', event)">Копіювати фабулу ч.2</button>
+                <p><b>Приклад фабули (ч.3 — проїзд на заборонний сигнал / понад 50 км/год):</b></p>
+                <div class="fabula-box" id="fabula122_3">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та проїхав на заборонний сигнал світлофора (червоний / жовтий), чим порушив вимоги п. ___ ПДР України. Посвідчення водія серії ___ №___ вилучено відповідно до ст. 265 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula122_3', event)">Копіювати фабулу ч.3</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> <b>ч.1, 2</b> — органи Національної поліції (ст. 222 КУпАП); <b>ч.3</b> (понад 50 км/год або проїзд на заборонний сигнал, передбачено позбавлення права керування) — суддя районного/міського суду (ст. 221 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 123 КУпАП — Порушення правил проїзду перехресть</h3>
+                <p><b>Частина 1:</b> Порушення правил проїзду регульованого або нерегульованого перехрестя.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 340 грн; ч.2 — штраф 510 грн або позбавлення права керування на 6–12 міс.</p>
+                <p style="color:#f87171;"><b>🪪 Вилучення посвідчення (ч.2, ст. 265 КУпАП):</b> при повторному порушенні — вилучення посвідчення водія до розгляду справи.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula123_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та порушив правила проїзду перехрестя, а саме: не поступився дорогою транспортному засобу, що мав перевагу.</div>
+                <button class="copy-btn" onclick="copyText('fabula123_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula123_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___, який протягом року вже притягувався до відповідальності за ст. 123 КУпАП, керував транспортним засобом ___, н.з. ___, та повторно порушив правила проїзду перехрестя, а саме: ___. Посвідчення водія серії ___ №___ вилучено відповідно до ст. 265 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula123_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> <b>ч.1</b> — органи Національної поліції (ст. 222 КУпАП); <b>ч.2</b> (повторне, передбачено позбавлення права керування) — суддя районного/міського суду (ст. 221 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 124 КУпАП — Порушення правил дорожнього руху, що спричинило пошкодження транспортних засобів, вантажу, автомобільних доріг, вулиць, залізничних переїздів, дорожніх споруд чи іншого майна</h3>
+                <p><b>Частина 1:</b> Порушення ПДР, що спричинило пошкодження транспортних засобів, вантажу, автомобільних доріг чи іншого майна.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені особою у стані алкогольного, наркотичного чи іншого сп'яніння або під впливом лікарських препаратів.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 510–1 020 грн; ч.2 — штраф 850–1 700 грн з позбавленням права керування на 1–2 роки.</p>
+                <p style="color:#f87171;"><b>🪪 Вилучення посвідчення (ст. 265 КУпАП):</b> обов'язкове вилучення посвідчення водія до розгляду справи в обох частинах.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula124_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та внаслідок порушення ПДР спричинив пошкодження ___ (вказати: ТЗ / вантаж / дорожнє покриття / огорожа). Посвідчення водія серії ___ №___ вилучено відповідно до ст. 265 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula124_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — у стані сп'яніння):</b></p>
+                <div class="fabula-box" id="fabula124_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___, перебуваючи у стані алкогольного сп'яніння, керував транспортним засобом ___, н.з. ___, та внаслідок порушення ПДР спричинив пошкодження ___. Посвідчення водія серії ___ №___ вилучено відповідно до ст. 265 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula124_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — в усіх частинах (передбачено позбавлення права керування).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 126 КУпАП — Керування транспортним засобом особами, які не мають права керування</h3>
+                <p><b>Частина 1:</b> Керування без посвідчення водія або з простроченим посвідченням, або без свідоцтва про реєстрацію ТЗ чи поліса страхування цивільно-правової відповідальності.</p>
+                <p><b>Частина 2:</b> Передача керування особі, яка не має посвідчення водія або перебуває у стані сп'яніння.</p>
+                <p><b>Частина 3:</b> Керування транспортним засобом особою, яка не має права керування (не отримувала посвідчення).</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 255–340 грн; ч.2 — штраф 340–510 грн; ч.3 — штраф 510–850 грн.</p>
+                <p style="color:#94a3b8;"><b>🚗 Затримання ТЗ (ст. 265-1 КУпАП):</b> при відсутності посвідчення або відсутності особи, яка має право керування, — затримання ТЗ.</p>
+                <p><b>Приклад фабули (ч.1 — без посвідчення водія):</b></p>
+                <div class="fabula-box" id="fabula126_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та не пред'явив посвідчення водія / свідоцтво про реєстрацію ТЗ / поліс страхування (непотрібне закреслити).</div>
+                <button class="copy-btn" onclick="copyText('fabula126_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — передача керування):</b></p>
+                <div class="fabula-box" id="fabula126_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ передав керування транспортним засобом ___, н.з. ___, особі ___, яка не мала при собі посвідчення водія / перебувала у стані сп'яніння (непотрібне закреслити).</div>
+                <button class="copy-btn" onclick="copyText('fabula126_2', event)">Копіювати фабулу ч.2</button>
+                <p><b>Приклад фабули (ч.3 — без права керування):</b></p>
+                <div class="fabula-box" id="fabula126_3">Сьогодні о ___ год. ___ хв. за адресою: ___, ___ керував транспортним засобом ___, н.з. ___, не маючи права керування транспортними засобами (посвідчення водія ніколи не отримував / позбавлений права керування — непотрібне закреслити). Транспортний засіб затримано відповідно до ст. 265-1 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula126_3', event)">Копіювати фабулу ч.3</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> <b>ч.1, 2</b> — органи Національної поліції (ст. 222 КУпАП); <b>ч.3</b> (ніколи не мав права керування) — суддя районного/міського суду (ст. 221 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 127 КУпАП — Порушення правил користування ременями безпеки або мотошоломами</h3>
+                <p><b>Частина 1:</b> Керування без застебнутого ременя безпеки або мотоциклом без захисного шолома.</p>
+                <p><b>Частина 2:</b> Перевезення пасажирів без ременів безпеки або дітей без дитячих утримуючих пристроїв.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 255 грн; ч.2 — штраф 255–510 грн.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula127_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, не використовуючи ремінь безпеки під час руху, чим порушив вимоги п. 2.3 ПДР України.</div>
+                <button class="copy-btn" onclick="copyText('fabula127_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — пасажир / дитина):</b></p>
+                <div class="fabula-box" id="fabula127_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, та перевозив пасажира / дитину ___ р.н. без застебнутого ременя безпеки / без дитячого утримуючого пристрою (непотрібне закреслити).</div>
+                <button class="copy-btn" onclick="copyText('fabula127_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 128 КУпАП — Порушення правил зупинки, стоянки, паркування транспортних засобів</h3>
+                <p><b>Частина 1:</b> Порушення правил зупинки або стоянки транспортного засобу.</p>
+                <p><b>Частина 2:</b> Зупинка або стоянка у забороненому місці (перехрестя, пішохідний перехід, зупинка ГТ тощо).</p>
+                <p><b>Частина 3:</b> Паркування у місцях для осіб з інвалідністю без відповідних документів.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 255 грн; ч.2 — штраф 340–510 грн; ч.3 — штраф 510–850 грн.</p>
+                <p style="color:#94a3b8;"><b>🚗 Затримання ТЗ (ст. 265-1 КУпАП):</b> при порушенні правил паркування у забороненому місці (ч.2, ч.3) — може застосовуватися затримання (евакуація) ТЗ.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula128_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ залишив транспортний засіб ___, н.з. ___, з порушенням правил зупинки/стоянки, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula128_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — заборонене місце):</b></p>
+                <div class="fabula-box" id="fabula128_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ залишив транспортний засіб ___, н.з. ___, у забороненому для стоянки місці, а саме: на пішохідному переході / перехресті / зупинці громадського транспорту (непотрібне закреслити). Транспортний засіб затримано відповідно до ст. 265-1 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula128_2', event)">Копіювати фабулу ч.2</button>
+                <p><b>Приклад фабули (ч.3 — місце для осіб з інвалідністю):</b></p>
+                <div class="fabula-box" id="fabula128_3">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ припаркував транспортний засіб ___, н.з. ___, на місці для паркування, призначеному для осіб з інвалідністю, не маючи відповідного посвідчення / дозволу. Транспортний засіб затримано відповідно до ст. 265-1 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula128_3', event)">Копіювати фабулу ч.3</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 130 КУпАП — Керування транспортними засобами або суднами особами у стані алкогольного, наркотичного чи іншого сп'яніння</h3>
+                <p><b>Частина 1:</b> Керування у стані алкогольного, наркотичного сп'яніння або під впливом лікарських препаратів, що знижують увагу та швидкість реакції.</p>
+                <p><b>Частина 2:</b> Відмова від проходження огляду на стан сп'яніння або від медичного огляду.</p>
+                <p><b>Частина 3:</b> Повторне вчинення дій, передбачених ч. 1 або 2, протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 6 800–8 500 грн з позбавленням права керування на 1–2 роки; ч.2 — штраф 8 500–10 200 грн з позбавленням права керування на 1,5–2 роки; ч.3 — штраф 10 200–17 000 грн з позбавленням права керування на 2–3 роки.</p>
+                <p style="color:#f87171;"><b>🪪 Вилучення посвідчення (ст. 265 КУпАП):</b> обов'язкове вилучення посвідчення водія до розгляду справи в усіх частинах.</p>
+                <p style="color:#94a3b8;"><b>🚗 Затримання ТЗ (ст. 265-1 КУпАП):</b> обов'язкове затримання транспортного засобу до усунення підстав (тверезий водій або евакуація).</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula130_1">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, перебуваючи у стані алкогольного сп'яніння, що підтверджується ознаками: ___ (запах алкоголю / нечітка мова / порушена координація рухів — конкретизувати). Огляд проведено, результат: ___ мг/л. Посвідчення водія серії ___ №___ вилучено. Транспортний засіб затримано відповідно до ст. 265-1 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula130_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — відмова від огляду):</b></p>
+                <div class="fabula-box" id="fabula130_2">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___ керував транспортним засобом ___, н.з. ___, з ознаками сп'яніння та відмовився від проходження огляду на стан алкогольного сп'яніння / медичного огляду (непотрібне закреслити) на законну вимогу поліцейського ___ (звання, ПІБ). Посвідчення водія серії ___ №___ вилучено. Транспортний засіб затримано відповідно до ст. 265-1 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula130_2', event)">Копіювати фабулу ч.2</button>
+                <p><b>Приклад фабули (ч.3 — повторне):</b></p>
+                <div class="fabula-box" id="fabula130_3">Сьогодні о ___ год. ___ хв. за адресою: ___, водій ___, який протягом року вже притягувався до відповідальності за ч.1/ч.2 ст. 130 КУпАП (непотрібне закреслити), повторно керував транспортним засобом ___, н.з. ___, перебуваючи у стані сп'яніння (ознаки: ___). Результат огляду: ___ мг/л. Посвідчення водія серії ___ №___ вилучено. Транспортний засіб затримано відповідно до ст. 265-1 КУпАП.</div>
+                <button class="copy-btn" onclick="copyText('fabula130_3', event)">Копіювати фабулу ч.3</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — в усіх частинах (передбачено позбавлення права керування).</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- НАРКОТИКИ -->
+    <div class="card" onclick="toggle(this)">
+        <h2>💊 Наркотичні засоби</h2>
+        <p>Статті КУпАП: 44</p>
+        <div class="content">
+
+            <div class="article">
+                <h3>Стаття 44 КУпАП — Незаконне виробництво, придбання, зберігання, перевезення, пересилання наркотичних засобів або психотропних речовин у невеликих розмірах</h3>
+                <p><b>Частина 1:</b> Незаконне виробництво, придбання, зберігання, перевезення наркотичних засобів або психотропних речовин без мети збуту в невеликих розмірах.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені особою, яку раніше притягали до відповідальності за ст. 44, або яка вживає наркотики без призначення лікаря.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф від 850 до 1 700 грн або громадські роботи від 20 до 60 год; ч.2 — штраф від 1 700 до 3 400 грн або адміністративний арешт до 15 діб.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula44_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ незаконно зберігав без мети збуту наркотичний засіб — ___, масою ___ г, що є невеликим розміром, без законних підстав.</div>
+                <button class="copy-btn" onclick="copyText('fabula44_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне / вживає):</b></p>
+                <div class="fabula-box" id="fabula44_2">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___, який раніше притягувався до відповідальності за ст. 44 КУпАП / вживає наркотики без призначення лікаря (непотрібне закреслити), незаконно зберігав без мети збуту наркотичний засіб — ___, масою ___ г.</div>
+                <button class="copy-btn" onclick="copyText('fabula44_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції (ч.1 ст. 44 КУпАП).</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — обидві частини (ч.2 передбачає адм. арешт).</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ГРОМАДСЬКИЙ ПОРЯДОК -->
+    <div class="card" onclick="toggle(this)">
+        <h2>👮 Громадський порядок</h2>
+        <p>Статті КУпАП: 173, 173-2, 174, 175, 175-1, 176, 178, 181-1, 184, 185, 187</p>
+        <div class="content">
+
+            <div class="article">
+                <h3>Стаття 173 КУпАП — Дрібне хуліганство</h3>
+                <p><b>Частина 1:</b> Нецензурна лайка в громадських місцях, образливе чіпляння до громадян та інші дії, що порушують громадський порядок і спокій.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені особою, яку протягом року вже притягували до стягнення за дрібне хуліганство.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 340–850 грн або громадські роботи 40–60 год, або адміністративний арешт 15 діб; ч.2 — штраф 850–1 700 грн або адміністративний арешт 15 діб.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula173_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ вчинив дрібне хуліганство, а саме: нецензурно лаявся у громадському місці / чіплявся до перехожих (непотрібне закреслити), чим порушував громадський порядок та спокій громадян.</div>
+                <button class="copy-btn" onclick="copyText('fabula173_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula173_2">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___, який протягом року вже притягувався до відповідальності за ст. 173 КУпАП, повторно вчинив дрібне хуліганство, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula173_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — обидві частини (передбачено громадські роботи або адм. арешт).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 173-2 КУпАП — Вчинення домашнього насильства, насильства за ознакою статі, невиконання термінового заборонного припису або неповідомлення про місце свого тимчасового перебування</h3>
+                <p><b>Частина 1:</b> Умисне вчинення будь-яких діянь фізичного, психологічного чи економічного характеру (застосування насильства, що не спричинило тілесних ушкоджень, погрози, образи, позбавлення житла, їжі, одягу, коштів тощо), внаслідок чого могла бути чи була завдана шкода фізичному або психічному здоров'ю потерпілого. Також — невиконання термінового заборонного припису або неповідомлення поліції про місце свого тимчасового перебування в разі винесення такого припису.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені особою, яку протягом року вже було піддано адміністративному стягненню за ч.1 цієї статті.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — громадські роботи 30–40 год або адміністративний арешт до 7 діб; ч.2 — громадські роботи 40–60 год або адміністративний арешт до 15 діб.</p>
+                <p><b>Приклад фабули (ч.1 — домашнє насильство):</b></p>
+                <div class="fabula-box" id="fabula1732_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ умисно вчинив домашнє насильство стосовно ___ (родинні стосунки: ___), а саме: ___ (застосував фізичне насильство / висловлював погрози / ображав / позбавляв коштів — конкретизувати), внаслідок чого була / могла бути завдана шкода фізичному або психічному здоров'ю потерпілого.</div>
+                <button class="copy-btn" onclick="copyText('fabula1732_1', event)">Копіювати фабулу ч.1 (насильство)</button>
+                <p><b>Приклад фабули (ч.1 — невиконання термінового заборонного припису):</b></p>
+                <div class="fabula-box" id="fabula1732_1b">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ не виконав терміновий заборонний припис від ___ №___, виданий уповноваженим підрозділом Національної поліції, а саме: ___ (повернувся до місця проживання потерпілого / вступив у контакт із потерпілим тощо).</div>
+                <button class="copy-btn" onclick="copyText('fabula1732_1b', event)">Копіювати фабулу ч.1 (невиконання припису)</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula1732_2">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___, який протягом року вже притягувався до адміністративної відповідальності за ч.1 ст. 173-2 КУпАП, повторно вчинив домашнє насильство стосовно ___, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula1732_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — обидві частини (передбачено громадські роботи або адм. арешт).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 174 КУпАП — Стрільба у забороненому місці</h3>
+                <p><b>Частина 1:</b> Стрільба з вогнепальної або холодної метальної зброї в населених пунктах у не відведених для цього місцях.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 170–340 грн з конфіскацією зброї або без такої.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula174_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ здійснював стрільбу з ___ (вид зброї) в населеному пункті у місці, де це заборонено, чим створив небезпеку для оточуючих.</div>
+                <button class="copy-btn" onclick="copyText('fabula174_1', event)">Копіювати фабулу ч.1</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 175 КУпАП — Порушення вимог пожежної безпеки</h3>
+                <p><b>Частина 1:</b> Порушення встановлених вимог пожежної безпеки.</p>
+                <p><b>Частина 2:</b> Ті самі дії, якщо призвели до пожежі, знищення майна або тілесних ушкоджень.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — попередження або штраф 85–170 грн; ч.2 — штраф 170–340 грн.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula175_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ порушив вимоги пожежної безпеки, а саме: ___ (конкретизувати), чим створив загрозу виникнення пожежі.</div>
+                <button class="copy-btn" onclick="copyText('fabula175_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — з наслідками):</b></p>
+                <div class="fabula-box" id="fabula175_2">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ порушив вимоги пожежної безпеки, а саме: ___, внаслідок чого виникла пожежа / завдано шкоду майну / отримано тілесні ушкодження (непотрібне закреслити).</div>
+                <button class="copy-btn" onclick="copyText('fabula175_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 237 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції; члени добровільної пожежної охорони (ч.2 ст. 255 КУпАП).</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи державного пожежного нагляду (ст. 237 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 175-1 КУпАП — Куріння тютюнових виробів у заборонених місцях</h3>
+                <p><b>Частина 1:</b> Куріння тютюнових виробів у місцях, де це заборонено законом, а також в інших місцях, визначених рішенням відповідної сільської, селищної, міської ради. Тягне за собою попередження або штраф від 3 до 10 н.м.д.г. (51–170 грн).</p>
+                <p><b>Частина 2:</b> Повторне протягом року вчинення порушення, передбаченого ч.1, за яке особу вже було піддано адміністративному стягненню. Тягне штраф від 10 до 20 н.м.д.г. (170–340 грн).</p>
+                <p><b>Заборонені місця (ст. 13 ЗУ №2899-IV):</b> заклади охорони здоров'я та їхня територія; навчальні заклади; спортивні споруди; під'їзди житлових будинків; аеропорти, вокзали; приміщення підприємств, установ та організацій усіх форм власності; готелі; гуртожитки; громадський транспорт; інші місця, заборонені законом або рішенням ради.</p>
+                <p><b>Примітка:</b> Поліцейський має право складати протокол (ст. 255 КУпАП). Справи щодо неповнолітніх (16–18 років) розглядаються суддями. Право розгляду залежить від місця вчинення правопорушення (див. нижче).</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula175_1_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ палив тютюновий виріб / електронну сигарету / кальян (непотрібне закреслити) у місці, де це заборонено законом, а саме: ___ (вказати: заклад охорони здоров'я / навчальний заклад / під'їзд житлового будинку / транспорт / інше), чим порушив вимоги ст. 13 ЗУ "Про заходи щодо попередження та зменшення вживання тютюнових виробів".</div>
+                <button class="copy-btn" onclick="copyText('fabula175_1_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula175_1_2">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___, який протягом року вже притягувався до адміністративної відповідальності за ст. 175-1 КУпАП, повторно курив тютюновий виріб / електронну сигарету у забороненому законом місці, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula175_1_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b><br>
+                    ✅ <b>Органи Національної поліції (ст. 222 КУпАП)</b> — якщо куріння у місці, забороненому <b>законом</b> (заклад охорони здоров'я, навчальний заклад, транспорт, під'їзд тощо).<br>
+                    🔴 <b>Адміністративна комісія</b> — якщо куріння у місці, забороненому <b>рішенням сільської, селищної, міської ради</b>.<br>
+                    ⚖️ <b>Суддя районного/міського суду (ст. 221 КУпАП)</b> — у справах щодо неповнолітніх (16–18 років).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 176 КУпАП — Виготовлення, зберігання самогону та апаратів для його вироблення</h3>
+                <p><b>Частина 1:</b> Виготовлення або зберігання без мети збуту самогону, або виготовлення, зберігання без мети збуту апаратів для вироблення самогону.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені особою, яку протягом року було піддано адміністративному стягненню.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 85–170 грн з конфіскацією самогону і апаратів; ч.2 — штраф 170–340 грн з конфіскацією.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula176_1">Сьогодні о ___ год. ___ хв. за адресою: ___, у ході перевірки виявлено, що громадянин ___ виготовляв / зберігав самогон у кількості ___ л / апарат для вироблення самогону (непотрібне закреслити) без мети збуту.</div>
+                <button class="copy-btn" onclick="copyText('fabula176_1', event)">Копіювати фабулу ч.1</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 178 КУпАП — Розпивання алкогольних напоїв або поява у нетверезому стані</h3>
+                <p><b>Частина 1:</b> Розпивання алкоголю у громадських місцях або поява у нетверезому вигляді, що ображає людську гідність.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року або підлітком до 16 років.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 51–119 грн; ч.2 — штраф 119–255 грн або громадські роботи 20–40 год.</p>
+                <p><b>Приклад фабули (ч.1 — розпивання):</b></p>
+                <div class="fabula-box" id="fabula178_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ розпивав алкогольний напій — ___ у громадському місці (парк / вулиця / двір / зупинка), чим порушив встановлені законом заборони.</div>
+                <button class="copy-btn" onclick="copyText('fabula178_1', event)">Копіювати фабулу ч.1 (розпивання)</button>
+                <p><b>Приклад фабули (ч.1 — нетверезий стан):</b></p>
+                <div class="fabula-box" id="fabula178_1b">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ перебував у громадському місці у нетверезому стані, що ображав людську гідність та громадську мораль (непристойний вигляд / нецензурна лайка / агресивна поведінка — конкретизувати).</div>
+                <button class="copy-btn" onclick="copyText('fabula178_1b', event)">Копіювати фабулу ч.1 (нетверезий стан)</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula178_2">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___, який протягом року вже притягувався до відповідальності за ст. 178 КУпАП, повторно розпивав алкогольний напій у громадському місці, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula178_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 181-1 КУпАП — Заняття проституцією</h3>
+                <p><b>Частина 1:</b> Заняття проституцією.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 510–850 грн; ч.2 — штраф 850–1 700 грн.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula1811_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянка / громадянин ___ займалась / займався проституцією, що підтверджується ___ (показаннями свідків / поясненнями / матеріалами оперативних заходів).</div>
+                <button class="copy-btn" onclick="copyText('fabula1811_1', event)">Копіювати фабулу ч.1</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 222 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> органи Національної поліції (ст. 222 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 184 КУпАП — Невиконання батьківських обов'язків</h3>
+                <p><b>Частина 1:</b> Невиконання батьками або особами, що їх замінюють, обов'язків щодо виховання дітей.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — попередження або штраф 51–119 грн; ч.2 — штраф 119–255 грн.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula184_1">Сьогодні о ___ год. ___ хв. за адресою: ___, встановлено, що громадянин ___, будучи батьком / матір'ю / опікуном неповнолітнього ___, ___ р.н., неналежно виконував батьківські обов'язки, а саме: ___ (залишив без нагляду / не забезпечив належного утримання / жорстоко поводився — конкретизувати).</div>
+                <button class="copy-btn" onclick="copyText('fabula184_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula184_2">Сьогодні о ___ год. ___ хв. за адресою: ___, встановлено, що громадянин ___, який раніше притягувався до відповідальності за ст. 184 КУпАП, повторно неналежно виконував батьківські обов'язки стосовно ___, ___ р.н., а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula184_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції (ч.1–3, 7 ст. 184); органи опіки та піклування (ч.5, 6 ст. 184).</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП).</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 185 КУпАП — Злісна непокора законній вимозі поліцейського</h3>
+                <p><b>Частина 1:</b> Злісна непокора законному розпорядженню або вимозі поліцейського під час виконання ним службових обов'язків.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — адміністративний арешт до 15 діб або штраф 340–510 грн.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula185_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ злісно не підкорився законній вимозі поліцейського ___ (звання, ПІБ), який перебував при виконанні службових обов'язків, а саме: відмовився ___ (зупинитись / пред'явити документи / припинити протиправні дії), незважаючи на неодноразові законні вимоги.</div>
+                <button class="copy-btn" onclick="copyText('fabula185_1', event)">Копіювати фабулу ч.1</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — передбачено адм. арешт.</p>
+                </div>
+            </div>
+
+            <div class="article">
+                <h3>Стаття 187 КУпАП — Порушення правил адміністративного нагляду</h3>
+                <p><b>Частина 1:</b> Порушення правил адміністративного нагляду особами, щодо яких встановлено такий нагляд, а саме: 1) неявка за викликом органу Національної поліції; 2) неповідомлення про зміну місця роботи чи проживання або про виїзд за межі району; 3) порушення заборони виходу з будинку у визначений час; 4) порушення заборони перебування у визначених місцях; 5) нереєстрація в органі Національної поліції.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року після накладення адміністративного стягнення.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 340–850 грн або адміністративний арешт до 15 діб; ч.2 — адміністративний арешт 10–15 діб.</p>
+                <p><b>Приклад фабули (ч.1 — нереєстрація):</b></p>
+                <div class="fabula-box" id="fabula187_1">Сьогодні о ___ год. ___ хв. за адресою: ___, встановлено, що громадянин ___, щодо якого відповідно до Закону України "Про адміністративний нагляд за особами, звільненими з місць позбавлення волі" встановлено адміністративний нагляд, порушив його правила, а саме: не з'явився для реєстрації в орган Національної поліції у встановлений термін / порушив заборону виходу з будинку у визначений час / не повідомив про зміну місця проживання (непотрібне закреслити).</div>
+                <button class="copy-btn" onclick="copyText('fabula187_1', event)">Копіювати фабулу ч.1</button>
+                <p><b>Приклад фабули (ч.2 — повторне):</b></p>
+                <div class="fabula-box" id="fabula187_2">Сьогодні о ___ год. ___ хв. за адресою: ___, встановлено, що громадянин ___, щодо якого встановлено адміністративний нагляд та який протягом року вже притягувався до відповідальності за ст. 187 КУпАП, повторно порушив правила нагляду, а саме: ___.</div>
+                <button class="copy-btn" onclick="copyText('fabula187_2', event)">Копіювати фабулу ч.2</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП) — передбачено адм. арешт.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ГОСПОДАРСЬКА ДІЯЛЬНІСТЬ -->
+    <div class="card" onclick="toggle(this)">
+        <h2>🏪 Господарська діяльність</h2>
+        <p>Статті КУпАП: 140, 156, 164</p>
+        <div class="content">
+            <div class="article">
+                <h3>Стаття 140 КУпАП — Порушення правил торгівлі на ринках</h3>
+                <p><b>Частина 1:</b> Торгівля у невстановлених місцях або без дозвільних документів.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 85–170 грн; ч.2 — штраф 170–255 грн.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula140_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ здійснював торгівлю ___ у невстановленому місці / без дозвільних документів, чим порушив правила торгівлі.</div>
+                <button class="copy-btn" onclick="copyText('fabula140_1', event)">Копіювати фабулу ч.1</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 218 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції (ч.4 ст. 140 КУпАП).</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> адміністративна комісія (ст. 218 КУпАП).</p>
+                </div>
+            </div>
+            <div class="article">
+                <h3>Стаття 156 КУпАП — Порушення правил торгівлі алкоголем та тютюном</h3>
+                <p><b>Частина 1:</b> Продаж алкоголю або тютюну особам до 18 років, або у заборонених місцях / у заборонений час.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 510–1 700 грн; ч.2 — штраф 1 700–3 400 грн.</p>
+                <p><b>Приклад фабули (ч.1 — продаж неповнолітньому):</b></p>
+                <div class="fabula-box" id="fabula156_1">Сьогодні о ___ год. ___ хв. за адресою: ___, особа ___ здійснила продаж алкогольного напою / тютюнового виробу (непотрібне закреслити) особі ___, ___ р.н., яка не досягла 18 років, без перевірки документів, що підтверджують вік.</div>
+                <button class="copy-btn" onclick="copyText('fabula156_1', event)">Копіювати фабулу ч.1 (неповнолітній)</button>
+                <p><b>Приклад фабули (ч.1 — заборонений час/місце):</b></p>
+                <div class="fabula-box" id="fabula156_1b">Сьогодні о ___ год. ___ хв. за адресою: ___, особа ___ здійснювала продаж алкогольних напоїв у заборонений час (___ год.) / у забороненому місці (вказати), чим порушила встановлені обмеження.</div>
+                <button class="copy-btn" onclick="copyText('fabula156_1b', event)">Копіювати фабулу ч.1 (заборонений час/місце)</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції; центральний орган виконавчої влади у сфері захисту прав споживачів.</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП).</p>
+                </div>
+            </div>
+            <div class="article">
+                <h3>Стаття 164 КУпАП — Порушення порядку провадження господарської діяльності</h3>
+                <p><b>Частина 1:</b> Провадження господарської діяльності без державної реєстрації або без ліцензії / дозволу.</p>
+                <p><b>Частина 2:</b> Ті самі дії, вчинені повторно протягом року.</p>
+                <p style="color:#fbbf24;"><b>⚖️ Санкція:</b> ч.1 — штраф 1 000–2 000 грн з конфіскацією виготовленої продукції, знарядь виробництва, сировини та грошей; ч.2 — штраф 2 000–5 000 грн з конфіскацією.</p>
+                <p><b>Приклад фабули (ч.1):</b></p>
+                <div class="fabula-box" id="fabula164_1">Сьогодні о ___ год. ___ хв. за адресою: ___, громадянин ___ здійснював господарську діяльність — ___ (вид діяльності) без державної реєстрації як суб'єкта господарювання / без відповідної ліцензії чи дозволу (непотрібне закреслити).</div>
+                <button class="copy-btn" onclick="copyText('fabula164_1', event)">Копіювати фабулу ч.1</button>
+                <div style="margin-top:10px;padding:10px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:8px;font-size:13px;">
+                    <p style="color:#a5b4fc;font-weight:600;margin-bottom:4px;">📋 Процесуальний порядок (ст. 255, 221 КУпАП)</p>
+                    <p style="color:#c7d2fe;"><b>Право складати протокол (ст. 255 КУпАП):</b> уповноважені посадові особи органів Національної поліції; органи ліцензування (у частині своїх ліцензій).</p>
+                    <p style="color:#c7d2fe;margin-top:4px;"><b>Право розгляду:</b> суддя районного/міського суду (ст. 221 КУпАП).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="policeAlgorithms" class="tab searchable">
+    <div class="card" onclick="toggle(this)">
+        <h2>Нормативна база</h2>
+
+        <div class="content">
+
+
+            <div class="article">
+                <h3>Основні НПА:</h3>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/254к/96-вр" target="_blank" onclick="event.stopPropagation()">Конституція України</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/4651-17" target="_blank" onclick="event.stopPropagation()">КПК України</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/80731-10" target="_blank" onclick="event.stopPropagation()">КУпАП</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/2341-14" target="_blank" onclick="event.stopPropagation()">ККУ</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/1306-2001-%D0%BF#Text" target="_blank" onclick="event.stopPropagation()">ПДР України</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/2297-17#Text" target="_blank" onclick="event.stopPropagation()">Закон про захист персональних даних</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/393/96-%D0%B2%D1%80#Text" target="_blank" onclick="event.stopPropagation()">Закон про звернення громадян</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/2337-19#Text" target="_blank" onclick="event.stopPropagation()">Дисциплінарний статут Національної поліції України</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/580-19" target="_blank" onclick="event.stopPropagation()">Закон про Національну поліцію</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/2704-17" target="_blank" onclick="event.stopPropagation()">Закон про адміністративний нагляд</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/1700-18" target="_blank" onclick="event.stopPropagation()">Закон про запобігання корупції</a>
+                <a class="pdf-btn" href="https://zakon.rada.gov.ua/laws/show/2229-19" target="_blank" onclick="event.stopPropagation()">Закон про домашнє насильство</a>
+            </div>
+
+            <div class="article">
+                <h3>Інші НПА:</h3>
+                <a class="copy-btn" href="Наказ_100_Єдиний_облік_заяв_поліції.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №100 — Порядок ведення єдиного обліку заяв і повідомлень</a>
+                <a class="copy-btn" href="Наказ_124_Профілактичний_облік.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №124 — Порядок взяття на профілактичний облік, проведення профілактичної роботи та зняття з профілактичного обліку кривдника</a>
+                <a class="copy-btn" href="Наказ_180_Адміністративна_практика.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №180 — Інструкція з формування та ведення інформаційної підсистеми «Адміністративна практика» ІКС «Інформаційний портал НПУ»</a>
+                <a class="copy-btn" href="Наказ_497_Гарпун.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №497 — Інструкція з ведення підсистеми «Гарпун»</a>
+                <a class="copy-btn" href="Наказ_533_ДТП_підсистема.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №533 — Інструкція з формування та ведення інформаційної підсистеми «Дорожньо-транспортна пригода» ІКС «Інформаційний портал НПУ»</a>
+                <a class="copy-btn" href="Наказ_633_Облік_ТЗ_на_стоянках.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №633 — Порядок обліку тимчасово затриманих ТЗ</a>
+                <a class="copy-btn" href="Наказ_654_Терміновий_заборонний_припис.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №654 — Порядок винесення термінового заборонного припису</a>
+                <a class="copy-btn" href="Наказ_777_Правила_ІТТ.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №777 — Правила внутрішнього розпорядку в ІТТ</a>
+                <a class="copy-btn" href="Наказ_1026_Технічні_прилади.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1026 — Інструкція із застосування органами та підрозділами поліції технічних приладів і засобів фото-, кінозйомки та відеозапису</a>
+                <a class="copy-btn" href="Наказ_1044_Ювенальна_превенція.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1044 — Інструкція з організації роботи підрозділів ювенальної превенції</a>
+                <a class="copy-btn" href="Постанова_1086_Вилучення_посвідчення.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1086 — Порядок тимчасового вилучення посвідчення водія</a>
+                <a class="copy-btn" href="Наказ_1102_Порядк_тимчасового_затримання_транспортних_засобів_та_їх_зберігання.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1102 — Порядок тимчасового затримання ТЗ та їх зберігання</a>
+                <a class="copy-btn" href="Наказ_1303_Адмін_нагляд.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1303/203 — Інструкція про організацію здійснення адміністративного нагляду за особами, звільненими з місць позбавлення волі</a>
+                <a class="copy-btn" href="Наказ_1376_Оформлення_адмін_правопорушень.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1376 — Інструкція з оформлення матеріалів про адміністративні правопорушення в органах поліції</a>
+                <a class="copy-btn" href="Наказ_1395_Адмін_правопорушення_БДР.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1395 — Інструкція з оформлення поліцейськими матеріалів про адміністративні правопорушення у сфері забезпечення безпеки дорожнього руху, зафіксовані не в автоматичному режимі</a>
+                <a class="copy-btn" href="Наказ_1452_Виявлення_спяніння.pdf" download onclick="event.stopPropagation()">⬇️ Наказ №1452/735 — Інструкція про порядок виявлення у водіїв ознак алкогольного, наркотичного чи іншого сп'яніння або перебування під впливом лікарських препаратів</a>
+            </div>
+
+            <div class="article">
+                <h3>📌 Алгоритми дій</h3>
+                <a class="copy-btn" href="Алгоритм_виконання_адміністративного_арешту_та_направлення_матеріалів_для_УПП.docx" download onclick="event.stopPropagation()">⬇️ Алгоритм виконання адміністративного арешту та направлення матеріалів для УПП</a>
+                <a class="copy-btn" href="Алгоритм_щодо_опрацювання_штрафів.docx" download onclick="event.stopPropagation()">⬇️ Алгоритм щодо опрацювання штрафів</a>
+                <a class="copy-btn" href="Направлення_матеріалів_адмін_арешт_УПП.doc" download onclick="event.stopPropagation()">⬇️ Направлення матеріалів — адміністративний арешт УПП</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="stateLeadership" class="tab searchable">
+    <div class="card" onclick="toggle(this)">
+        <h2>Керівництво держави</h2>
+        <p>PDF-файли керівництва.</p>
+        <div class="content">
+            <div class="article">
+                <h3>Держави</h3>
+                <a class="pdf-btn" href="derzhava.pdf" target="_blank" onclick="event.stopPropagation()">Відкрити PDF</a>
+            </div>
+
+            <div class="article">
+                <h3>МВС України</h3>
+                <a class="pdf-btn" href="mvs.pdf" target="_blank" onclick="event.stopPropagation()">Відкрити PDF</a>
+            </div>
+
+            <div class="article">
+                <h3>Національної поліції</h3>
+                <a class="pdf-btn" href="npu.pdf" target="_blank" onclick="event.stopPropagation()">Відкрити PDF</a>
+            </div>
+
+            <div class="article">
+                <h3>Область</h3>
+                <a class="pdf-btn" href="oblast.pdf" target="_blank" onclick="event.stopPropagation()">Відкрити PDF</a>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div id="templates" class="tab searchable">
+    <div class="card" style="cursor:default;">
+        <h2>📄 Шаблони документів</h2>
+        <p>Завантажте готові шаблони процесуальних документів</p>
+        <div class="content" style="display:block;">
+
+            <div class="article">
+                <h3>📋 Протокол прийняття заяви про кримінальне правопорушення та іншу подію</h3>
+                <p>Бланк протоколу для прийняття заяви або повідомлення про кримінальне правопорушення чи іншу подію.</p>
+                <a class="copy-btn" href="Протокол_прийняття_заяви_про_кримінальне_правопорушення_та_іншу_подію.doc" download>⬇️ Завантажити (.doc)</a>
+            </div>
+
+            <div class="article">
+                <h3>📝 Скарга</h3>
+                <p>Шаблон скарги для оформлення відповідних звернень.</p>
+                <a class="copy-btn" href="скарга.doc" download>⬇️ Завантажити (.doc)</a>
+            </div>
+
+            <div class="article">
+                <h3>✍️ Пояснення</h3>
+                <p>Шаблон бланку пояснення.</p>
+                <a class="copy-btn" href="пояснення.doc" download>⬇️ Завантажити (.doc)</a>
+            </div>
+
+            <div class="article">
+                <h3>🔍 Протокол огляду місця події</h3>
+                <p>Бланк протоколу огляду місця події відповідно до ст.ст. 104, 105, 106, 234, 237, 223 КПК України.</p>
+                <a class="copy-btn" href="Огляд_місця_події.docx" download>⬇️ Завантажити (.docx)</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="positivePractices" class="tab searchable">
+
+    <div class="card" style="cursor:default;">
+        <h2><img src="ger.png" style="height:28px;width:auto;vertical-align:middle;margin-right:8px;"> Впроваджені позитивні практики</h2>
+        <div class="content" style="display:block;">
+
+            <div class="article">
+                <p>Управління головної інспекції ГУНП впроваджує позитивні практики з метою удосконалення службової діяльності підрозділів поліції, поширення ефективних форм і методів роботи, які мають практичний результат, зміцнення службової дисципліни, забезпечення законності, підвищення якості управлінських рішень, належної організації контролю, раціонального використання сил і засобів, своєчасного виявлення та усунення проблемних питань, створення належних і безпечних умов несення служби, підтримки поліцейських у виконанні покладених завдань, а також формування єдиного підходу до організації роботи, спрямованого на підвищення ефективності, відповідальності та результативності службової діяльності органів і підрозділів поліції.</p>
+                <p style="margin-top:12px;">Водночас діяльність Управління головної інспекції ГУНП спрямована на те, щоб поліцейський у своїй щоденній службі мав зрозумілі алгоритми дій, належну методичну підтримку, доступ до практичних рішень, безпечні умови несення служби та організаційну допомогу з боку керівництва. Тобто УГІ не лише здійснює контроль, а й працює для поліцейських, допомагаючи їм якісно, законно та впевнено виконувати службові завдання, своєчасно орієнтуватися у складних службових ситуаціях, уникати типових помилок і покращувати результати роботи підрозділів поліції.</p>
+            </div>
+
+            <div class="article" style="border:1px dashed rgba(99,179,237,.3);background:rgba(59,130,246,.05);">
+                <h3>📁 Файли позитивних практик</h3>
+                <p style="color:var(--muted);font-style:italic;">Файли буде додано пізніше.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div id="curators" class="tab searchable">
+
+    <div class="card" onclick="toggle(this)">
+        <h2>🔎 Управління головної інспекції</h2>
+        <p>Куратори підрозділів області від УГІ ГУНП</p>
+        <div class="content">
+
+            <div class="article curator-block">
+                <img src="Vlas.jpg" onclick="openLightbox('Vlas.jpg')"  >
+                <div>
+                    <p style="font-size:16px;font-weight:bold;text-decoration:underline;">КУРАТОР</p>
+                    <p>Новомосковського РВП ГУНП</p>
+                    <br>
+                    <p>Старший інспектор відділу підтримки<br>майор поліції</p>
+                    <p style="font-size:18px;font-weight:bold;">ВЛАСЕНКО Олексій Олександрович</p>
+                    <br>
+                    <p><b>конт. тел.:</b> (095) 726 58 27</p>
+                </div>
+            </div>
+
+            <div class="article curator-block" style="margin-top:15px;">
+                <img src="Kus.jpg" onclick="openLightbox('Kus.jpg')"  >
+                <div>
+                    <p style="font-size:16px;font-weight:bold;text-decoration:underline;">КУРАТОР</p>
+                    <p>Відділення поліції № 5<br>Криворізького РУП ГУНП</p>
+                    <br>
+                    <p>Старший інспектор відділу підтримки<br>підполковник поліції</p>
+                    <p style="font-size:18px;font-weight:bold;">КУШНЄРОВ Радіон Юрійович</p>
+                    <br>
+                    <p><b>конт. тел.:</b> (067) 796 02 17</p>
+                </div>
+            </div>
+
+            <div class="article curator-block" style="margin-top:15px;">
+                <img src="Sal.jpg" onclick="openLightbox('Sal.jpg')"  >
+                <div>
+                    <p style="font-size:16px;font-weight:bold;text-decoration:underline;">КУРАТОР</p>
+                    <p>Відділення поліції № 9<br>Дніпровського РУП ГУНП</p>
+                    <br>
+                    <p>Інспектор відділу підтримки<br>старший лейтенант поліції</p>
+                    <p style="font-size:18px;font-weight:bold;">САЛОГУБ Сергій Миколайович</p>
+                    <br>
+                    <p><b>конт. тел.:</b> (095) 914 06 28</p>
+                </div>
+            </div>
+
+            <div class="article curator-block" style="margin-top:15px;">
+                <img src="Sam.jpg" onclick="openLightbox('Sam.jpg')"  >
+                <div>
+                    <p style="font-size:16px;font-weight:bold;text-decoration:underline;">КУРАТОР</p>
+                    <p>Відділення поліції № 1<br>Нікопольського РУП ГУНП</p>
+                    <br>
+                    <p>Старший інспектор з особливих доручень відділу підтримки<br>майор поліції</p>
+                    <p style="font-size:18px;font-weight:bold;">САМОЙЛІК Віктор Володимирович</p>
+                    <br>
+                    <p><b>конт. тел.:</b> (095) 255 50 77</p>
+                </div>
+            </div>
+
+            <div class="article curator-block" style="margin-top:15px;">
+                <img src="Pol.jpg" onclick="openLightbox('Pol.jpg')"  >
+                <div>
+                    <p style="font-size:16px;font-weight:bold;text-decoration:underline;">КУРАТОР</p>
+                    <p>Відділення поліції № 3<br>Дніпровського РУП ГУНП</p>
+                    <br>
+                    <p>Старший інспектор відділу підтримки<br>майор поліції</p>
+                    <p style="font-size:18px;font-weight:bold;">ПОЛЯКОВ Сергій Анатолійович</p>
+                    <br>
+                    <p><b>конт. тел.:</b> (063) 787 76 16</p>
+                </div>
+            </div>
+
+            <div class="article curator-block" style="margin-top:15px;">
+                <img src="mag.jpg" onclick="openLightbox('mag.jpg')"  >
+                <div>
+                    <p style="font-size:16px;font-weight:bold;text-decoration:underline;">КУРАТОР</p>
+                    <p>Відділення поліції № 1<br>Кам'янського РУП ГУНП</p>
+                    <br>
+                    <p>Старший інспектор з особливих доручень відділу підтримки<br>майор поліції</p>
+                    <p style="font-size:18px;font-weight:bold;">МАГДЕНКО Владислав Григорович</p>
+                    <br>
+                    <p><b>конт. тел.:</b> (099) 023 95 52</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Вкладка "Подати звернення" -->
+<div id="appeal" class="tab">
+    <div class="card" style="cursor:default;">
+        <h2>📩 Подати звернення</h2>
+        <p>Заповніть форму нижче. Звернення буде надіслано на електронну пошту відповідального співробітника.</p>
+        <div class="content" style="display:block;">
+
+            <div class="article" style="max-width:700px;margin:16px auto;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.35);border-left:4px solid #ef4444;">
+                <p style="color:#fca5a5;font-size:15px;font-weight:700;margin-bottom:10px;">‼️ ВАЖЛИВО</p>
+                <p style="color:#fcd5d5;font-size:14px;line-height:1.7;">Якщо ви стали свідком події, яка щойно вчинена або триває, одразу повідомляйте про це на <b style="color:#f87171;">"102"</b>, які забезпечать оперативне реагування!</p>
+            </div>
+
+            <div class="article" style="max-width:700px;margin:12px auto;">
+                <p style="color:#93c5fd;font-size:15px;font-weight:600;margin-bottom:12px;">Діяльність головної інспекції полягає в:</p>
+                <ol style="color:#cbd5e1;font-size:14px;line-height:1.9;padding-left:20px;display:flex;flex-direction:column;gap:6px;">
+                    <li>допомозі поліцейським в усуненні перешкод, що впливають на ефективне виконання службових обов'язків;</li>
+                    <li>підтримці та моніторингу діяльності підрозділів поліції;</li>
+                    <li>реалізації заходів, спрямованих на запобігання порушенням поліцейськими службової дисципліни;</li>
+                    <li>інспектуванні та контролі за службовою діяльністю підрозділів поліції;</li>
+                    <li>проведенні службових розслідувань та перевірок за відомостями про вчинення дисциплінарних проступків працівниками поліції;</li>
+                    <li>розгляді звернень про неправомірні дії поліцейських.</li>
+                </ol>
+            </div>
+
+            <div class="article" style="max-width:700px;margin:12px auto;">
+                <div id="appeal-success" style="display:none;text-align:center;padding:30px 0;">
+                    <div style="font-size:48px;margin-bottom:12px;">✅</div>
+                    <p style="font-size:18px;color:#4ade80;font-weight:bold;">Звернення успішно надіслано!</p>
+                    <p style="color:var(--muted);margin-top:8px;">Дякуємо. Ваше звернення надійшло на розгляд.</p>
+                    <button onclick="resetAppealForm()" style="margin-top:20px;padding:10px 24px;background:rgba(59,130,246,.2);border:1px solid var(--accent);border-radius:8px;color:#93c5fd;cursor:pointer;font-size:15px;">Подати ще одне звернення</button>
+                </div>
+
+                <div id="appeal-form-wrap">
+                    <div style="display:grid;gap:14px;">
+
+                        <div>
+                            <label style="display:block;color:var(--muted);font-size:13px;margin-bottom:5px;">Підрозділ *</label>
+                            <input id="ap-name" type="text" placeholder="Наприклад: Новомосковський РВП ГУНП"
+                                style="width:100%;padding:11px 14px;background:var(--surface3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;outline:none;transition:border-color .2s;"
+                                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+
+                        <div>
+                            <label style="display:block;color:var(--muted);font-size:13px;margin-bottom:5px;">П.І.Б. <span style="color:#8892a4;font-size:12px;">(необов'язково)</span></label>
+                            <input id="ap-pib" type="text" placeholder="Прізвище Ім'я По батькові"
+                                style="width:100%;padding:11px 14px;background:var(--surface3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;outline:none;transition:border-color .2s;"
+                                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+
+                        <div>
+                            <label style="display:block;color:var(--muted);font-size:13px;margin-bottom:5px;">Електронна пошта *</label>
+                            <input id="ap-email" type="email" placeholder="example@email.com"
+                                style="width:100%;padding:11px 14px;background:var(--surface3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;outline:none;transition:border-color .2s;"
+                                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                            <p style="color:var(--muted);font-size:12px;margin-top:5px;padding-left:2px;">* Зазначається для зворотного зв'язку</p>
+                        </div>
+
+                        <div>
+                            <label style="display:block;color:var(--muted);font-size:13px;margin-bottom:5px;">Тема звернення *</label>
+                            <select id="ap-subject"
+                                style="width:100%;padding:11px 14px;background:var(--surface3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;outline:none;cursor:pointer;transition:border-color .2s;"
+                                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                                <option value="">— Оберіть тему —</option>
+                                <option>Скарга</option>
+                                <option>Пропозиція щодо покращення роботи</option>
+                                <option>Запит на інформацію</option>
+                                <option>Повідомлення про корупцію</option>
+                                <option>Інше</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label style="display:block;color:var(--muted);font-size:13px;margin-bottom:5px;">Текст звернення *</label>
+                            <textarea id="ap-message" rows="6" placeholder="Викладіть суть вашого звернення..."
+                                style="width:100%;padding:11px 14px;background:var(--surface3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;outline:none;resize:vertical;transition:border-color .2s;font-family:inherit;"
+                                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+                        </div>
+
+                        <div id="ap-error" style="display:none;color:#f87171;font-size:14px;padding:10px 14px;background:rgba(248,113,113,.1);border-radius:8px;border:1px solid rgba(248,113,113,.3);"></div>
+
+                        <div>
+                            <button id="ap-submit-btn" onclick="submitAppeal()"
+                                style="width:100%;padding:14px;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:8px;color:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s;letter-spacing:.3px;">
+                                📨 Надіслати звернення
+                            </button>
+                        </div>
+
+                        <p style="color:var(--muted);font-size:12px;text-align:center;">
+                            Поля позначені * є обов'язковими
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== МОДАЛЬНЕ ВІКНО ВХОДУ ===== -->
+<div id="login-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="background:#111827;border:1px solid rgba(99,179,237,.25);border-radius:16px;padding:36px 32px;width:100%;max-width:400px;margin:16px;box-shadow:0 0 60px rgba(59,130,246,.3);">
+        <div style="text-align:center;margin-bottom:24px;">
+            <div style="font-size:48px;margin-bottom:8px;">🔐</div>
+            <h2 style="color:#e2e8f0;font-size:22px;margin-bottom:4px;">Особистий кабінет</h2>
+            <p style="color:#8892a4;font-size:14px;">Авторизація адміністратора</p>
+        </div>
+        <div style="display:grid;gap:14px;">
+            <div>
+                <label style="display:block;color:#8892a4;font-size:13px;margin-bottom:5px;">Логін</label>
+                <input id="login-input" type="text" placeholder="Введіть логін"
+                    style="width:100%;padding:12px 14px;background:#1a2235;border:1px solid rgba(99,179,237,.2);border-radius:8px;color:#e2e8f0;font-size:15px;outline:none;box-sizing:border-box;transition:border-color .2s;"
+                    onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='rgba(99,179,237,.2)'"
+                    onkeydown="if(event.key==='Enter')document.getElementById('pass-input').focus()">
+            </div>
+            <div>
+                <label style="display:block;color:#8892a4;font-size:13px;margin-bottom:5px;">Пароль</label>
+                <input id="pass-input" type="password" placeholder="Введіть пароль"
+                    style="width:100%;padding:12px 14px;background:#1a2235;border:1px solid rgba(99,179,237,.2);border-radius:8px;color:#e2e8f0;font-size:15px;outline:none;box-sizing:border-box;transition:border-color .2s;"
+                    onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='rgba(99,179,237,.2)'"
+                    onkeydown="if(event.key==='Enter')doLogin()">
+            </div>
+            <div id="login-error" style="display:none;color:#f87171;font-size:14px;padding:10px 14px;background:rgba(248,113,113,.1);border-radius:8px;border:1px solid rgba(248,113,113,.3);text-align:center;">
+                ❌ Невірний логін або пароль
+            </div>
+            <button onclick="doLogin()"
+                style="width:100%;padding:14px;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:8px;color:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s;">
+                Увійти
+            </button>
+            <button onclick="closeLogin()"
+                style="width:100%;padding:10px;background:transparent;border:1px solid rgba(99,179,237,.2);border-radius:8px;color:#8892a4;font-size:14px;cursor:pointer;">
+                Скасувати
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ПАНЕЛЬ ОСОБИСТОГО КАБІНЕТУ ===== -->
+<div id="cabinet-panel" style="display:none;position:fixed;inset:0;z-index:9998;background:#0b0f1a;overflow-y:auto;">
+    <!-- Верхня панель -->
+    <div style="background:linear-gradient(135deg,#0f1e35,#1a2d4a);border-bottom:1px solid rgba(99,179,237,.2);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:22px;">🛡️</span>
+            <div>
+                <div style="color:#e2e8f0;font-weight:700;font-size:16px;">Особистий кабінет</div>
+                <div style="color:#8892a4;font-size:12px;">ГУНП в Дніпропетровській області</div>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+            <span style="color:#4ade80;font-size:13px;">● UGI</span>
+            <button onclick="closeCabinet()"
+                style="padding:8px 16px;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);border-radius:8px;color:#f87171;font-size:14px;cursor:pointer;">
+                Вийти
+            </button>
+        </div>
+    </div>
+
+    <!-- Зміст кабінету -->
+    <div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
+
+        <!-- Статистика -->
+        <!-- Відвідуваність -->
+        <div style="background:#111827;border:1px solid rgba(99,179,237,.15);border-radius:12px;padding:18px 22px;margin-bottom:18px;">
+            <div style="color:#8892a4;font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">📊 Відвідуваність сайту</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
+                <div style="text-align:center;">
+                    <div id="stat-visitors-total" style="font-size:30px;font-weight:700;color:#6366f1;">0</div>
+                    <div style="color:#8892a4;font-size:12px;margin-top:3px;">Всього відвідувань</div>
+                </div>
+                <div style="text-align:center;">
+                    <div id="stat-visitors-today" style="font-size:30px;font-weight:700;color:#3b82f6;">0</div>
+                    <div style="color:#8892a4;font-size:12px;margin-top:3px;">Сьогодні</div>
+                </div>
+                <div style="text-align:center;">
+                    <div id="stat-visitors-week" style="font-size:30px;font-weight:700;color:#a78bfa;">0</div>
+                    <div style="color:#8892a4;font-size:12px;margin-top:3px;">За тиждень</div>
+                </div>
+                <div style="text-align:center;">
+                    <div id="stat-visitors-unique" style="font-size:30px;font-weight:700;color:#38bdf8;">0</div>
+                    <div style="color:#8892a4;font-size:12px;margin-top:3px;">Унікальних</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статистика звернень -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px;">
+            <div style="background:#111827;border:1px solid rgba(99,179,237,.15);border-radius:12px;padding:18px;text-align:center;">
+                <div id="stat-total" style="font-size:36px;font-weight:700;color:#3b82f6;">0</div>
+                <div style="color:#8892a4;font-size:13px;margin-top:4px;">Всього звернень</div>
+            </div>
+            <div style="background:#111827;border:1px solid rgba(99,179,237,.15);border-radius:12px;padding:18px;text-align:center;">
+                <div id="stat-new" style="font-size:36px;font-weight:700;color:#4ade80;">0</div>
+                <div style="color:#8892a4;font-size:13px;margin-top:4px;">Нові (не прочитані)</div>
+            </div>
+            <div style="background:#111827;border:1px solid rgba(99,179,237,.15);border-radius:12px;padding:18px;text-align:center;">
+                <div id="stat-today" style="font-size:36px;font-weight:700;color:#f59e0b;">0</div>
+                <div style="color:#8892a4;font-size:13px;margin-top:4px;">Сьогодні</div>
+            </div>
+            <div style="background:#111827;border:1px solid rgba(99,179,237,.15);border-radius:12px;padding:18px;text-align:center;">
+                <div id="stat-read" style="font-size:36px;font-weight:700;color:#8892a4;">0</div>
+                <div style="color:#8892a4;font-size:13px;margin-top:4px;">Опрацьовано</div>
+            </div>
+        </div>
+
+        <!-- Фільтри -->
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;align-items:center;">
+            <input id="cab-search" type="text" placeholder="🔍 Пошук за підрозділом, темою, текстом..."
+                style="flex:1;min-width:200px;padding:10px 14px;background:#1a2235;border:1px solid rgba(99,179,237,.2);border-radius:8px;color:#e2e8f0;font-size:14px;outline:none;"
+                oninput="filterAppeals()">
+            <select id="cab-filter" onchange="filterAppeals()"
+                style="padding:10px 14px;background:#1a2235;border:1px solid rgba(99,179,237,.2);border-radius:8px;color:#e2e8f0;font-size:14px;outline:none;cursor:pointer;">
+                <option value="all">Всі звернення</option>
+                <option value="new">Нові</option>
+                <option value="read">Опрацьовані</option>
+            </select>
+            <button onclick="clearAllAppeals()"
+                style="padding:10px 16px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:14px;cursor:pointer;">
+                🗑 Очистити всі
+            </button>
+        </div>
+
+        <!-- Список звернень -->
+        <div id="appeals-list">
+            <div style="text-align:center;padding:60px 20px;color:#8892a4;">
+                <div style="font-size:48px;margin-bottom:12px;">📭</div>
+                <p style="font-size:16px;">Звернень поки немає</p>
+                <p style="font-size:13px;margin-top:6px;">Тут з'являтимуться всі звернення, подані через форму на сайті</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ===== МОДАЛЬНЕ ВІКНО ПЕРЕГЛЯДУ ЗВЕРНЕННЯ ===== -->
+<div id="appeal-view-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+    <div style="background:#111827;border:1px solid rgba(99,179,237,.25);border-radius:16px;padding:28px;width:100%;max-width:600px;margin:16px;box-shadow:0 0 60px rgba(59,130,246,.2);max-height:85vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 style="color:#e2e8f0;font-size:18px;">📄 Деталі звернення</h3>
+            <button onclick="closeAppealView()" style="background:none;border:none;color:#8892a4;font-size:22px;cursor:pointer;line-height:1;">×</button>
+        </div>
+        <div id="appeal-view-content"></div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button id="mark-read-btn" onclick="markCurrentRead()"
+                style="flex:1;padding:10px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.4);border-radius:8px;color:#4ade80;font-size:14px;cursor:pointer;">
+                ✅ Позначити опрацьованим
+            </button>
+            <button id="delete-appeal-btn" onclick="deleteCurrentAppeal()"
+                style="flex:1;padding:10px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:14px;cursor:pointer;">
+                🗑 Видалити
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const AUTO_EXPAND_TABS = ['policeAlgorithms', 'stateLeadership', 'curators'];
+
+function openTab(tabId, fromSearch){
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    const tab = document.getElementById(tabId);
+    tab.classList.add("active");
+    document.querySelectorAll(".nav button").forEach(b => {
+        b.classList.toggle("is-active", b.getAttribute("onclick") && b.getAttribute("onclick").includes(tabId));
+    });
+    if (!fromSearch) {
+        document.getElementById("search").value = "";
+        resetSearch();
+    }
+    if (AUTO_EXPAND_TABS.includes(tabId)) {
+        tab.querySelectorAll(".card .content").forEach(c => c.style.display = "block");
+    }
+}
+
+function toggle(element){
+    let content = element.querySelector(".content");
+    if(content.style.display === "block"){
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    }
+}
+
+function copyText(id, event){
+    event.stopPropagation();
+    let text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text);
+    alert("Фабулу скопійовано");
+}
+
+function resetSearch(){
+    let cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        card.style.display = "block";
+    });
+}
+
+// Встановлюємо активну кнопку при завантаженні
+document.addEventListener('DOMContentLoaded', function() {
+    initFirebase();
+    const firstBtn = document.querySelector('.nav button');
+    if (firstBtn) firstBtn.classList.add('is-active');
+    trackVisit(); // фіксуємо відвідування
+    initArticleAccordions();
+});
+
+// ===== FIREBASE CONFIG =====
+// 🔧 ЗАПОВНІТЬ ЦІ ЗНАЧЕННЯ ПІСЛЯ СТВОРЕННЯ ПРОЄКТУ У FIREBASE CONSOLE
+const FIREBASE_CONFIG = {
+    apiKey:            "AIzaSyCKW6pNAe_guhvrP-FH_zM0xZkFmZsy6oU",
+    authDomain:        "ugi-dnipro-85977.firebaseapp.com",
+    databaseURL:       "https://ugi-dnipro-85977-default-rtdb.firebaseio.com",
+    projectId:         "ugi-dnipro-85977",
+    storageBucket:     "ugi-dnipro-85977.firebasestorage.app",
+    messagingSenderId: "705719660606",
+    appId:             "1:705719660606:web:f803ba98d7e7941eb8a16f"
+};
+
+// Ініціалізація Firebase (імпортується через CDN нижче)
+let db = null;
+let appealsRef = null;
+let realtimeAppeals = []; // кеш з realtime підпискою
+
+function initFirebase() {
+    try {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        db = firebase.database();
+        appealsRef = db.ref('appeals');
+        console.log('✅ Firebase підключено');
+    } catch(e) {
+        console.error('❌ Firebase помилка:', e);
+    }
+}
+
+// ===== Відправка звернення → Firebase =====
+async function submitAppeal() {
+    const name    = document.getElementById('ap-name').value.trim();
+    const pib     = document.getElementById('ap-pib').value.trim();
+    const email   = document.getElementById('ap-email').value.trim();
+    const subject = document.getElementById('ap-subject').value;
+    const message = document.getElementById('ap-message').value.trim();
+    const errBox  = document.getElementById('ap-error');
+    const btn     = document.getElementById('ap-submit-btn');
+
+    errBox.style.display = 'none';
+
+    if (!name)    { showError('Будь ласка, вкажіть підрозділ.'); return; }
+    if (!email)   { showError('Будь ласка, вкажіть електронну пошту.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Будь ласка, введіть коректну електронну пошту.'); return; }
+    if (!subject) { showError('Будь ласка, оберіть тему звернення.'); return; }
+    if (!message) { showError('Будь ласка, введіть текст звернення.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Збереження...';
+
+    try {
+        const newRef = appealsRef.push();
+        await newRef.set({
+            id:      newRef.key,
+            date:    new Date().toISOString(),
+            name, pib, email, subject, message,
+            read: false
+        });
+
+        document.getElementById('appeal-form-wrap').style.display = 'none';
+        document.getElementById('appeal-success').style.display = 'block';
+    } catch(e) {
+        showError('Помилка збереження. Спробуйте ще раз.');
+        console.error(e);
+    }
+
+    btn.disabled = false;
+    btn.textContent = '📨 Надіслати звернення';
+}
+
+function showError(msg) {
+    const errBox = document.getElementById('ap-error');
+    errBox.textContent = msg;
+    errBox.style.display = 'block';
+}
+
+function resetAppealForm() {
+    document.getElementById('ap-name').value = '';
+    document.getElementById('ap-pib').value = '';
+    document.getElementById('ap-email').value = '';
+    document.getElementById('ap-subject').value = '';
+    document.getElementById('ap-message').value = '';
+    document.getElementById('ap-error').style.display = 'none';
+    document.getElementById('appeal-success').style.display = 'none';
+    document.getElementById('appeal-form-wrap').style.display = 'block';
+    document.getElementById('ap-submit-btn').disabled = false;
+    document.getElementById('ap-submit-btn').textContent = '📨 Надіслати звернення';
+}
+
+// ===== ОСОБИСТИЙ КАБІНЕТ =====
+const CABINET_LOGIN = 'UGI';
+const CABINET_PASS  = 'UGI00001';
+let currentViewId   = null;
+let isLoggedIn      = false;
+let unsubscribeRealtime = null; // для відписки від Firebase listener
+
+function openCabinet() {
+    if (isLoggedIn) { showCabinet(); return; }
+    const ov = document.getElementById('login-overlay');
+    ov.style.display = 'flex';
+    document.getElementById('login-input').value = '';
+    document.getElementById('pass-input').value = '';
+    document.getElementById('login-error').style.display = 'none';
+    setTimeout(() => document.getElementById('login-input').focus(), 100);
+}
+function closeLogin() {
+    document.getElementById('login-overlay').style.display = 'none';
+}
+function doLogin() {
+    const l = document.getElementById('login-input').value.trim();
+    const p = document.getElementById('pass-input').value.trim();
+    if (l === CABINET_LOGIN && p === CABINET_PASS) {
+        isLoggedIn = true;
+        document.getElementById('login-overlay').style.display = 'none';
+        showCabinet();
+    } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('pass-input').value = '';
+        document.getElementById('pass-input').focus();
+    }
+}
+
+function showCabinet() {
+    document.getElementById('cabinet-panel').style.display = 'block';
+
+    // Підписуємось на реальні зміни у Firebase
+    if (unsubscribeRealtime) unsubscribeRealtime();
+    unsubscribeRealtime = appealsRef.on('value', snapshot => {
+        const data = snapshot.val() || {};
+        realtimeAppeals = Object.values(data);
+        renderAppeals();
+        updateStats();
+        updateVisitorStats();
+    });
+}
+
+function closeCabinet() {
+    isLoggedIn = false;
+    document.getElementById('cabinet-panel').style.display = 'none';
+    // Відписуємось від realtime щоб не витрачати з'єднання
+    if (unsubscribeRealtime) {
+        appealsRef.off('value', unsubscribeRealtime);
+        unsubscribeRealtime = null;
+    }
+}
+
+function updateStats() {
+    const appeals = realtimeAppeals;
+    const today = new Date().toDateString();
+    document.getElementById('stat-total').textContent = appeals.length;
+    document.getElementById('stat-new').textContent   = appeals.filter(a => !a.read).length;
+    document.getElementById('stat-today').textContent = appeals.filter(a => new Date(a.date).toDateString() === today).length;
+    document.getElementById('stat-read').textContent  = appeals.filter(a => a.read).length;
+}
+
+// ===== ТРЕКІНГ ВІДВІДУВАЧІВ =====
+const VISITORS_KEY = 'ugi_visitors';
+const UNIQUE_KEY   = 'ugi_unique_id';
+
+function trackVisit() {
+    // Генеруємо унікальний ID для цього браузера якщо немає
+    let uid = localStorage.getItem(UNIQUE_KEY);
+    if (!uid) {
+        uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+        localStorage.setItem(UNIQUE_KEY, uid);
+    }
+
+    const now = new Date();
+    const todayStr = now.toDateString();
+    const weekAgo = new Date(now - 7*24*60*60*1000).toDateString();
+
+    let data;
+    try { data = JSON.parse(localStorage.getItem(VISITORS_KEY) || 'null'); } catch(e) { data = null; }
+    if (!data) data = { total: 0, visits: [], uniqueIds: [] };
+
+    // Додаємо відвідування
+    data.total = (data.total || 0) + 1;
+    data.visits.push({ date: now.toISOString(), uid });
+    // Обмежуємо масив останніми 10 000 записів
+    if (data.visits.length > 10000) data.visits = data.visits.slice(-10000);
+    // Унікальні
+    if (!data.uniqueIds.includes(uid)) data.uniqueIds.push(uid);
+
+    localStorage.setItem(VISITORS_KEY, JSON.stringify(data));
+}
+
+function getVisitorStats() {
+    let data;
+    try { data = JSON.parse(localStorage.getItem(VISITORS_KEY) || 'null'); } catch(e) { data = null; }
+    if (!data) return { total: 0, today: 0, week: 0, unique: 0 };
+
+    const now = new Date();
+    const todayStr = new Date().toDateString();
+    const weekAgo  = new Date(now - 7*24*60*60*1000);
+
+    const today  = (data.visits || []).filter(v => new Date(v.date).toDateString() === todayStr).length;
+    const week   = (data.visits || []).filter(v => new Date(v.date) >= weekAgo).length;
+    return {
+        total:  data.total || 0,
+        today,
+        week,
+        unique: (data.uniqueIds || []).length
+    };
+}
+
+function updateVisitorStats() {
+    const vs = getVisitorStats();
+    document.getElementById('stat-visitors-total').textContent  = vs.total;
+    document.getElementById('stat-visitors-today').textContent  = vs.today;
+    document.getElementById('stat-visitors-week').textContent   = vs.week;
+    document.getElementById('stat-visitors-unique').textContent = vs.unique;
+}
+
+function renderAppeals() {
+    const searchVal = (document.getElementById('cab-search')?.value || '').toLowerCase();
+    const filterVal = document.getElementById('cab-filter')?.value || 'all';
+    let appeals = realtimeAppeals.slice().sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    if (filterVal === 'new')  appeals = appeals.filter(a => !a.read);
+    if (filterVal === 'read') appeals = appeals.filter(a =>  a.read);
+    if (searchVal) {
+        appeals = appeals.filter(a =>
+            (a.name||'').toLowerCase().includes(searchVal) ||
+            (a.pib||'').toLowerCase().includes(searchVal) ||
+            (a.subject||'').toLowerCase().includes(searchVal) ||
+            (a.message||'').toLowerCase().includes(searchVal) ||
+            (a.email||'').toLowerCase().includes(searchVal)
+        );
+    }
+
+    const list = document.getElementById('appeals-list');
+    if (!appeals.length) {
+        list.innerHTML = `<div style="text-align:center;padding:60px 20px;color:#8892a4;">
+            <div style="font-size:48px;margin-bottom:12px;">📭</div>
+            <p style="font-size:16px;">Звернень не знайдено</p>
+        </div>`;
+        return;
+    }
+
+    const subjectColors = {
+        'Скарга': '#f87171',
+        'Пропозиція щодо покращення роботи': '#4ade80',
+        'Запит на інформацію': '#93c5fd',
+        'Повідомлення про корупцію': '#f59e0b',
+        'Інше': '#a78bfa'
+    };
+
+    list.innerHTML = appeals.map(a => {
+        const color = subjectColors[a.subject] || '#8892a4';
+        const dt = new Date(a.date);
+        const dateStr = dt.toLocaleDateString('uk-UA') + ' ' + dt.toLocaleTimeString('uk-UA', {hour:'2-digit', minute:'2-digit'});
+        return `<div onclick="viewAppeal('${a.id}')" style="
+            background:#111827;border:1px solid ${a.read ? 'rgba(99,179,237,.1)' : 'rgba(99,179,237,.3)'};
+            border-left:4px solid ${color};border-radius:12px;padding:16px 20px;margin-bottom:10px;
+            cursor:pointer;transition:all .2s;opacity:${a.read ? '.7' : '1'};"
+            onmouseover="this.style.borderColor='rgba(99,179,237,.5)';this.style.transform='translateY(-1px)'"
+            onmouseout="this.style.borderColor='${a.read ? 'rgba(99,179,237,.1)' : 'rgba(99,179,237,.3)'}';this.style.transform='none'">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+                        ${!a.read ? '<span style="background:rgba(74,222,128,.2);border:1px solid rgba(74,222,128,.4);color:#4ade80;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;">НОВЕ</span>' : ''}
+                        <span style="background:rgba(99,179,237,.1);border:1px solid rgba(99,179,237,.2);color:${color};font-size:11px;padding:2px 8px;border-radius:20px;">${a.subject}</span>
+                    </div>
+                    <div style="color:#e2e8f0;font-weight:600;font-size:15px;margin-bottom:4px;">${a.name}</div>
+                    <div style="color:#8892a4;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.message.substring(0,120)}${a.message.length>120?'...':''}</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                    <div style="color:#8892a4;font-size:12px;">${dateStr}</div>
+                    ${a.email ? `<div style="color:#93c5fd;font-size:12px;margin-top:2px;">${a.email}</div>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterAppeals() { renderAppeals(); }
+
+function viewAppeal(id) {
+    const a = realtimeAppeals.find(x => x.id === id);
+    if (!a) return;
+    currentViewId = id;
+
+    const dt = new Date(a.date);
+    const dateStr = dt.toLocaleDateString('uk-UA', {year:'numeric',month:'long',day:'numeric'}) +
+                    ' о ' + dt.toLocaleTimeString('uk-UA', {hour:'2-digit',minute:'2-digit'});
+
+    document.getElementById('appeal-view-content').innerHTML = `
+        <div style="display:grid;gap:14px;">
+            <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
+                <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Підрозділ</div>
+                <div style="color:#e2e8f0;font-size:15px;font-weight:600;">${a.name}</div>
+            </div>
+            ${a.pib ? `<div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
+                <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">П.І.Б.</div>
+                <div style="color:#e2e8f0;font-size:15px;">${a.pib}</div>
+            </div>` : ''}
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
+                    <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Тема</div>
+                    <div style="color:#93c5fd;font-size:14px;font-weight:600;">${a.subject}</div>
+                </div>
+                <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
+                    <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Дата</div>
+                    <div style="color:#e2e8f0;font-size:13px;">${dateStr}</div>
+                </div>
+            </div>
+            ${a.email ? `<div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
+                <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Email для відповіді</div>
+                <div style="color:#93c5fd;font-size:14px;"><a href="mailto:${a.email}" style="color:#93c5fd;">${a.email}</a></div>
+            </div>` : ''}
+            <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
+                <div style="color:#8892a4;font-size:12px;margin-bottom:8px;">Текст звернення</div>
+                <div style="color:#cbd5e1;font-size:14px;line-height:1.7;white-space:pre-wrap;">${a.message}</div>
+            </div>
+        </div>`;
+
+    const btn = document.getElementById('mark-read-btn');
+    if (a.read) {
+        btn.style.opacity = '.5';
+        btn.style.cursor = 'default';
+        btn.textContent = '✅ Опрацьовано';
+    } else {
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+        btn.textContent = '✅ Позначити опрацьованим';
+    }
+
+    const ov = document.getElementById('appeal-view-overlay');
+    ov.style.display = 'flex';
+}
+
+function closeAppealView() {
+    document.getElementById('appeal-view-overlay').style.display = 'none';
+    currentViewId = null;
+}
+function markCurrentRead() {
+    if (!currentViewId) return;
+    appealsRef.child(currentViewId).update({ read: true });
+    closeAppealView();
+}
+function deleteCurrentAppeal() {
+    if (!currentViewId) return;
+    if (!confirm('Видалити це звернення?')) return;
+    appealsRef.child(currentViewId).remove();
+    closeAppealView();
+}
+function clearAllAppeals() {
+    if (!confirm('Видалити ВСІ звернення? Цю дію неможливо скасувати.')) return;
+    appealsRef.remove();
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const searchEl = document.getElementById("search");
+    if (searchEl) {
+        searchEl.addEventListener("input", function(){
+            const value = this.value.toLowerCase().trim();
+
+            if (!value) {
+                // Скидаємо пошук: показуємо картки, закриваємо вміст (крім AUTO_EXPAND вкладок)
+                document.querySelectorAll(".tab").forEach(tab => {
+                    tab.querySelectorAll(".card").forEach(card => {
+                        card.style.display = "block";
+                        const content = card.querySelector(".content");
+                        if (content && !AUTO_EXPAND_TABS.includes(tab.id)) {
+                            content.style.display = "none";
+                        }
+                    });
+                });
+                return;
+            }
+
+            // Шукаємо по всіх вкладках (крім кабінету)
+            const searchableTabs = document.querySelectorAll(".tab.searchable");
+            let firstMatchTab = null;
+
+            searchableTabs.forEach(tab => {
+                let tabHasMatch = false;
+                tab.querySelectorAll(".card").forEach(card => {
+                    // Збираємо текст із видимих і прихованих елементів
+                    const allText = card.textContent.toLowerCase();
+                    const matches = allText.includes(value);
+                    card.style.display = matches ? "block" : "none";
+                    if (matches) {
+                        tabHasMatch = true;
+                        // Розгортаємо вміст картки при знаходженні
+                        const content = card.querySelector(".content");
+                        if (content) content.style.display = "block";
+                    }
+                });
+                if (tabHasMatch && !firstMatchTab) firstMatchTab = tab;
+            });
+
+            // Якщо знайдено у іншій вкладці — переходимо туди
+            if (firstMatchTab && !firstMatchTab.classList.contains("active")) {
+                openTab(firstMatchTab.id, true);
+                // Після openTab пошук скинувся, тому вручну фільтруємо знову
+                firstMatchTab.querySelectorAll(".card").forEach(card => {
+                    const allText = card.textContent.toLowerCase();
+                    const matches = allText.includes(value);
+                    card.style.display = matches ? "block" : "none";
+                    if (matches) {
+                        const content = card.querySelector(".content");
+                        if (content) content.style.display = "block";
+                    }
+                });
+            }
+        });
+    }
+});
+
+
+function initArticleAccordions() {
+    document.querySelectorAll('#adminPractice .article').forEach(function(article) {
+        const h3 = article.querySelector('h3');
+        if (!h3 || article.classList.contains('curator-block')) return;
+        article.classList.add('article-accordion');
+
+        // Wrap everything after h3 into .article-body
+        const body = document.createElement('div');
+        body.className = 'article-body';
+        // Move all siblings after h3 into body
+        const children = Array.from(article.childNodes);
+        const h3Index = children.indexOf(h3);
+        children.slice(h3Index + 1).forEach(function(node) {
+            body.appendChild(node);
+        });
+        article.appendChild(body);
+
+        // Add arrow to h3
+        const arr = document.createElement('span');
+        arr.className = 'arr';
+        arr.textContent = '▶';
+        h3.appendChild(arr);
+
+        // Click handler
+        h3.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = body.classList.contains('open');
+            // Close all others in same .content
+            const parent = article.closest('.content');
+            if (parent) {
+                parent.querySelectorAll('.article-body.open').forEach(function(b) {
+                    b.classList.remove('open');
+                    const hh = b.parentElement.querySelector('h3');
+                    if (hh) hh.classList.remove('open');
+                });
+            }
+            if (!isOpen) {
+                body.classList.add('open');
+                h3.classList.add('open');
+            }
+        });
+    });
+}
+
+function openLightbox(src) {
+    const lb = document.getElementById('photo-lightbox');
+    document.getElementById('photo-lightbox-img').src = src;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('photo-lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+});
+</script>
+
+</body>
+</html>
