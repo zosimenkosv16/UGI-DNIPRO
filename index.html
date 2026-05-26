@@ -33,7 +33,7 @@
         }
 
  /* === МОБІЛЬНА АДАПТАЦІЯ === */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     body { 
         padding: 8px; 
     }
@@ -115,7 +115,7 @@
 }
 
         /* Планшети */
-        @media (min-width: 641px) and (max-width: 1024px) {
+        @media (min-width: 769px) and (max-width: 1024px) {
             body { padding: 14px; }
             h1 { font-size: 26px !important; }
             .header > div video { max-width: 60% !important; }
@@ -129,7 +129,7 @@
 
         /* Мобільне меню — показуємо тільки на телефоні */
         .nav-mobile { display: none; margin-top: 14px; }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .nav-mobile { display: block; }
             .nav { display: none !important; }
         }
@@ -425,7 +425,7 @@
         }
 
         /* Мобільні куратори — компактний горизонтальний вигляд */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .curator-block {
                 gap: 12px;
                 align-items: flex-start;
@@ -1812,7 +1812,7 @@ const TAB_NAMES = {
 };
 
 function isMobile() {
-    return window.innerWidth <= 640;
+    return window.innerWidth <= 768;
 }
 
 function toggleMobileMenu() {
