@@ -1923,7 +1923,9 @@ function openMobileOverlay(tabId) {
     body.querySelectorAll('.card').forEach(function(card) {
         const c = card.querySelector('.content');
         if (isAccordionTab) {
-            // Закриваємо блок, додаємо toggle-поведінку
+            // Прибираємо старий onclick щоб не конфліктував
+            card.removeAttribute('onclick');
+            // Закриваємо блок
             if (c && !c.getAttribute('data-always-open')) {
                 c.style.display = 'none';
             }
@@ -1939,10 +1941,8 @@ function openMobileOverlay(tabId) {
                 h2.style.justifyContent = 'space-between';
                 h2.appendChild(arr);
             }
-            // Робимо заголовок картки клікабельним
             card.style.cursor = 'pointer';
             card.addEventListener('click', function(e) {
-                // Не реагувати якщо клік по кнопці/посиланню всередині
                 if (e.target.closest('button, a, .copy-btn, .pdf-btn')) return;
                 if (!c) return;
                 const isOpen = c.style.display === 'block';
