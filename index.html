@@ -1854,10 +1854,8 @@
 <script>
 const AUTO_EXPAND_TABS = ['policeAlgorithms', 'stateLeadership', 'curators'];
 
-function updateMobileSelect(tabId) {
-    const sel = document.getElementById('mobile-nav-select');
-    if (sel) sel.value = tabId;
-}
+// updateMobileSelect: елемент #mobile-nav-select відсутній у HTML — функція-заглушка
+function updateMobileSelect(tabId) { /* no-op */ }
 
 const TAB_NAMES = {
     home:               '🏠 Головна',
@@ -1923,12 +1921,30 @@ function openMobileOverlay(tabId) {
     // Розгортаємо всі картки і прибираємо toggle — в оверлеї весь вміст видимий одразу
     body.querySelectorAll('.card').forEach(function(card) {
         card.removeAttribute('onclick');
-        var c = card.querySelector('.content');
+        const c = card.querySelector('.content');
         if (c) c.style.display = 'block';
     });
 
     // Ініціалізуємо акордеони статей всередині оверлею
     initArticleAccordionsIn(body);
+
+    // Якщо це вкладка "Подати звернення" — переприв'язуємо кнопку до мобільної версії
+    if (tabId === 'appeal') {
+        const submitBtn = body.querySelector('#mob_ap-submit-btn');
+        if (submitBtn) {
+            submitBtn.onclick = function(e) {
+                e.stopPropagation();
+                submitAppealMobile(body);
+            };
+        }
+        const resetBtn = body.querySelector('#mob_appeal-new-btn');
+        if (resetBtn) {
+            resetBtn.onclick = function(e) {
+                e.stopPropagation();
+                resetAppealFormMobile(body);
+            };
+        }
+    }
 
     title.textContent = TAB_NAMES[tabId] || tabId;
     overlay.style.display = 'flex';
@@ -1985,8 +2001,30 @@ function toggle(element){
 function copyText(id, event){
     event.stopPropagation();
     let text = document.getElementById(id).innerText;
-    navigator.clipboard.writeText(text);
-    alert("Фабулу скопійовано");
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => alert("Фабулу скопійовано"))
+            .catch(() => copyTextFallback(text));
+    } else {
+        copyTextFallback(text);
+    }
+}
+
+function copyTextFallback(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+        document.execCommand('copy');
+        alert("Фабулу скопійовано");
+    } catch(e) {
+        alert("Не вдалося скопіювати. Скопіюйте текст вручну.");
+    }
+    document.body.removeChild(ta);
 }
 
 function resetSearch(){
@@ -1998,10 +2036,9 @@ function resetSearch(){
 
 // Встановлюємо активну кнопку при завантаженні
 document.addEventListener('DOMContentLoaded', function() {
-    initFirebase();
+    initFirebase(); // trackVisit() викликається всередині після успішної ініціалізації
     const firstBtn = document.querySelector('.nav button');
     if (firstBtn) firstBtn.classList.add('is-active');
-    trackVisit(); // фіксуємо відвідування
     initArticleAccordions();
 });
 
@@ -2031,12 +2068,14 @@ function initFirebase() {
         appealsRef = db.ref('appeals');
         feedbackRef = db.ref('feedback');
         feedbackRef.on('value', function(snapshot) {
-            var data = snapshot.val() || {};
+            const data = snapshot.val() || {};
             realtimeFeedback = Object.entries(data).map(function(e) { return Object.assign({id: e[0]}, e[1]); });
             renderFeedback();
             updateFeedbackStats();
         });
         console.log('✅ Firebase підключено');
+        // Фіксуємо відвідування лише після того, як db точно ініціалізовано
+        trackVisit();
     } catch(e) {
         console.error('❌ Firebase помилка:', e);
     }
@@ -2074,13 +2113,14 @@ async function submitAppeal() {
 
         document.getElementById('appeal-form-wrap').style.display = 'none';
         document.getElementById('appeal-success').style.display = 'block';
+        // Кнопку НЕ розблоковуємо після успіху — форма вже прихована
     } catch(e) {
         showError('Помилка збереження. Спробуйте ще раз.');
         console.error(e);
+        // Розблоковуємо кнопку лише при помилці, щоб користувач міг спробувати знову
+        btn.disabled = false;
+        btn.textContent = '📨 Надіслати звернення';
     }
-
-    btn.disabled = false;
-    btn.textContent = '📨 Надіслати звернення';
 }
 
 function showError(msg) {
@@ -2102,13 +2142,94 @@ function resetAppealForm() {
     document.getElementById('ap-submit-btn').textContent = '📨 Надіслати звернення';
 }
 
+// ===== МОБІЛЬНА ФОРМА ЗВЕРНЕННЯ (елементи з префіксом mob_) =====
+async function submitAppealMobile(container) {
+    const get = id => container.querySelector('#mob_' + id);
+    const name    = get('ap-name').value.trim();
+    const pib     = get('ap-pib').value.trim();
+    const email   = get('ap-email').value.trim();
+    const subject = get('ap-subject').value;
+    const message = get('ap-message').value.trim();
+    const errBox  = get('ap-error');
+    const btn     = get('ap-submit-btn');
+
+    const showErr = function(msg) {
+        errBox.textContent = msg;
+        errBox.style.display = 'block';
+    };
+
+    errBox.style.display = 'none';
+    if (!name)    { showErr('Будь ласка, вкажіть підрозділ.'); return; }
+    if (!email)   { showErr('Будь ласка, вкажіть електронну пошту.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('Будь ласка, введіть коректну електронну пошту.'); return; }
+    if (!subject) { showErr('Будь ласка, оберіть тему звернення.'); return; }
+    if (!message) { showErr('Будь ласка, введіть текст звернення.'); return; }
+
+    if (!appealsRef) { showErr('Помилка з\'єднання з базою даних.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Збереження...';
+
+    try {
+        const newRef = appealsRef.push();
+        await newRef.set({
+            id: newRef.key,
+            date: new Date().toISOString(),
+            name, pib, email, subject, message,
+            read: false
+        });
+        get('appeal-form-wrap').style.display = 'none';
+        get('appeal-success').style.display = 'block';
+    } catch(e) {
+        showErr('Помилка збереження. Спробуйте ще раз.');
+        console.error(e);
+        btn.disabled = false;
+        btn.textContent = '📨 Надіслати звернення';
+    }
+}
+
+function resetAppealFormMobile(container) {
+    const get = id => container.querySelector('#mob_' + id);
+    get('ap-name').value = '';
+    get('ap-pib').value = '';
+    get('ap-email').value = '';
+    get('ap-subject').value = '';
+    get('ap-message').value = '';
+    get('ap-error').style.display = 'none';
+    get('appeal-success').style.display = 'none';
+    get('appeal-form-wrap').style.display = 'block';
+    const btn = get('ap-submit-btn');
+    btn.disabled = false;
+    btn.textContent = '📨 Надіслати звернення';
+    // переприв'язуємо кнопку знову
+    btn.onclick = function(e) {
+        e.stopPropagation();
+        submitAppealMobile(container);
+    };
+}
+
 // ===== ОСОБИСТИЙ КАБІНЕТ =====
+// ⚠️ УВАГА: Логін/пароль зберігаються на клієнті — будь-який користувач може їх побачити
+// у вихідному коді сторінки. Рекомендується замінити на Firebase Authentication.
 const CABINET_LOGIN = 'UGI';
-const CABINET_PASS  = 'UGI00001';
 let currentViewId   = null;
 let isLoggedIn      = false;
 let unsubscribeRealtime = null; // для відписки від Firebase listener
 
+function doLogin() {
+    const l = document.getElementById('login-input').value.trim();
+    const p = document.getElementById('pass-input').value.trim();
+    // Тимчасово — пряме порівняння, поки не замінено на Firebase Auth
+    if (l === CABINET_LOGIN && p === 'UGI00001') {
+        isLoggedIn = true;
+        document.getElementById('login-overlay').style.display = 'none';
+        showCabinet();
+    } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('pass-input').value = '';
+        document.getElementById('pass-input').focus();
+    }
+}
 function openCabinet() {
     if (isLoggedIn) { showCabinet(); return; }
     const ov = document.getElementById('login-overlay');
@@ -2121,31 +2242,23 @@ function openCabinet() {
 function closeLogin() {
     document.getElementById('login-overlay').style.display = 'none';
 }
-function doLogin() {
-    const l = document.getElementById('login-input').value.trim();
-    const p = document.getElementById('pass-input').value.trim();
-    if (l === CABINET_LOGIN && p === CABINET_PASS) {
-        isLoggedIn = true;
-        document.getElementById('login-overlay').style.display = 'none';
-        showCabinet();
-    } else {
-        document.getElementById('login-error').style.display = 'block';
-        document.getElementById('pass-input').value = '';
-        document.getElementById('pass-input').focus();
-    }
-}
 
 function showCabinet() {
     document.getElementById('cabinet-panel').style.display = 'block';
 
     // Підписуємось на реальні зміни у Firebase
-    if (unsubscribeRealtime) unsubscribeRealtime();
-    unsubscribeRealtime = appealsRef.on('value', snapshot => {
+    // Зберігаємо саму callback-функцію для коректної відписки через .off()
+    if (unsubscribeRealtime) {
+        appealsRef.off('value', unsubscribeRealtime);
+        unsubscribeRealtime = null;
+    }
+    unsubscribeRealtime = function(snapshot) {
         const data = snapshot.val() || {};
         realtimeAppeals = Object.values(data);
         renderAppeals();
         updateStats();
-    });
+    };
+    appealsRef.on('value', unsubscribeRealtime);
 
     // Підписка на статистику відвідувань (Firebase)
     subscribeVisitorStats();
@@ -2257,11 +2370,6 @@ function subscribeVisitorStats() {
         cachedTabStats = snap.val() || {};
         renderTabStats();
     });
-}
-
-function updateVisitorStats() {
-    updateVisitorStatsUI();
-    renderTabStats();
 }
 
 function updateVisitorStatsUI() {
@@ -2399,7 +2507,7 @@ function renderAppeals() {
         const color = subjectColors[a.subject] || '#8892a4';
         const dt = new Date(a.date);
         const dateStr = dt.toLocaleDateString('uk-UA') + ' ' + dt.toLocaleTimeString('uk-UA', {hour:'2-digit', minute:'2-digit'});
-        return `<div onclick="viewAppeal('${a.id}')" style="
+        return `<div onclick="viewAppeal('${escapeHtml(a.id)}')" style="
             background:#111827;border:1px solid ${a.read ? 'rgba(99,179,237,.1)' : 'rgba(99,179,237,.3)'};
             border-left:4px solid ${color};border-radius:12px;padding:16px 20px;margin-bottom:10px;
             cursor:pointer;transition:all .2s;opacity:${a.read ? '.7' : '1'};"
@@ -2409,14 +2517,14 @@ function renderAppeals() {
                 <div style="flex:1;min-width:0;">
                     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
                         ${!a.read ? '<span style="background:rgba(74,222,128,.2);border:1px solid rgba(74,222,128,.4);color:#4ade80;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;">НОВЕ</span>' : ''}
-                        <span style="background:rgba(99,179,237,.1);border:1px solid rgba(99,179,237,.2);color:${color};font-size:11px;padding:2px 8px;border-radius:20px;">${a.subject}</span>
+                        <span style="background:rgba(99,179,237,.1);border:1px solid rgba(99,179,237,.2);color:${color};font-size:11px;padding:2px 8px;border-radius:20px;">${escapeHtml(a.subject)}</span>
                     </div>
-                    <div style="color:#e2e8f0;font-weight:600;font-size:15px;margin-bottom:4px;">${a.name}</div>
-                    <div style="color:#8892a4;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.message.substring(0,120)}${a.message.length>120?'...':''}</div>
+                    <div style="color:#e2e8f0;font-weight:600;font-size:15px;margin-bottom:4px;">${escapeHtml(a.name)}</div>
+                    <div style="color:#8892a4;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(a.message.substring(0,120))}${a.message.length>120?'...':''}</div>
                 </div>
                 <div style="text-align:right;flex-shrink:0;">
                     <div style="color:#8892a4;font-size:12px;">${dateStr}</div>
-                    ${a.email ? `<div style="color:#93c5fd;font-size:12px;margin-top:2px;">${a.email}</div>` : ''}
+                    ${a.email ? `<div style="color:#93c5fd;font-size:12px;margin-top:2px;">${escapeHtml(a.email)}</div>` : ''}
                 </div>
             </div>
         </div>`;
@@ -2438,16 +2546,16 @@ function viewAppeal(id) {
         <div style="display:grid;gap:14px;">
             <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
                 <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Підрозділ</div>
-                <div style="color:#e2e8f0;font-size:15px;font-weight:600;">${a.name}</div>
+                <div style="color:#e2e8f0;font-size:15px;font-weight:600;">${escapeHtml(a.name)}</div>
             </div>
             ${a.pib ? `<div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
                 <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">П.І.Б.</div>
-                <div style="color:#e2e8f0;font-size:15px;">${a.pib}</div>
+                <div style="color:#e2e8f0;font-size:15px;">${escapeHtml(a.pib)}</div>
             </div>` : ''}
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
                     <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Тема</div>
-                    <div style="color:#93c5fd;font-size:14px;font-weight:600;">${a.subject}</div>
+                    <div style="color:#93c5fd;font-size:14px;font-weight:600;">${escapeHtml(a.subject)}</div>
                 </div>
                 <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
                     <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Дата</div>
@@ -2456,11 +2564,11 @@ function viewAppeal(id) {
             </div>
             ${a.email ? `<div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
                 <div style="color:#8892a4;font-size:12px;margin-bottom:4px;">Email для відповіді</div>
-                <div style="color:#93c5fd;font-size:14px;"><a href="mailto:${a.email}" style="color:#93c5fd;">${a.email}</a></div>
+                <div style="color:#93c5fd;font-size:14px;"><a href="mailto:${escapeHtml(a.email)}" style="color:#93c5fd;">${escapeHtml(a.email)}</a></div>
             </div>` : ''}
             <div style="background:#1a2235;border-radius:8px;padding:14px 16px;">
                 <div style="color:#8892a4;font-size:12px;margin-bottom:8px;">Текст звернення</div>
-                <div style="color:#cbd5e1;font-size:14px;line-height:1.7;white-space:pre-wrap;">${a.message}</div>
+                <div style="color:#cbd5e1;font-size:14px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(a.message)}</div>
             </div>
         </div>`;
 
@@ -2565,23 +2673,23 @@ function initArticleAccordionsIn(container) {
     container.querySelectorAll('.article').forEach(function(article) {
         if (article.classList.contains('curator-block')) return;
 
-        var h3 = article.querySelector('h3');
+        const h3 = article.querySelector('h3');
         if (!h3) return;
 
         // Знаходимо або створюємо article-body
-        var bodyDiv = article.querySelector('.article-body');
+        const bodyDiv = article.querySelector('.article-body');
         if (!bodyDiv) {
             // Стаття ще не трансформована — трансформуємо
             article.classList.add('article-accordion');
             bodyDiv = document.createElement('div');
             bodyDiv.className = 'article-body';
-            var children = Array.from(article.childNodes);
-            var h3Index = children.indexOf(h3);
+            const children = Array.from(article.childNodes);
+            const h3Index = children.indexOf(h3);
             children.slice(h3Index + 1).forEach(function(node) {
                 bodyDiv.appendChild(node);
             });
             article.appendChild(bodyDiv);
-            var arr = document.createElement('span');
+            const arr = document.createElement('span');
             arr.className = 'arr';
             arr.textContent = '▶';
             h3.appendChild(arr);
@@ -2590,12 +2698,12 @@ function initArticleAccordionsIn(container) {
         // Завжди додаємо обробник кліку (innerHTML скидає всі listeners)
         h3.addEventListener('click', function(e) {
             e.stopPropagation();
-            var isOpen = bodyDiv.classList.contains('open');
-            var parent = article.closest('.content');
+            const isOpen = bodyDiv.classList.contains('open');
+            const parent = article.closest('.content');
             if (parent) {
                 parent.querySelectorAll('.article-body.open').forEach(function(b) {
                     b.classList.remove('open');
-                    var hh = b.parentElement.querySelector('h3');
+                    const hh = b.parentElement.querySelector('h3');
                     if (hh) hh.classList.remove('open');
                 });
             }
@@ -2716,6 +2824,17 @@ function submitFeedback() {
         });
 }
 
+// ===== ЗАХИСТ ВІД XSS — екранування HTML =====
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function renderFeedback() {
     const el = document.getElementById('feedback-list');
     if (!el) return;
@@ -2728,18 +2847,18 @@ function renderFeedback() {
         const dt = new Date(f.date);
         const dateStr = dt.toLocaleDateString('uk-UA', {day:'numeric',month:'short',year:'numeric'}) + ' ' + dt.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
         return `<div style="background:#1a2235;border:1px solid ${f.read?'rgba(99,179,237,.1)':'rgba(99,179,237,.3)'};border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;"
-            onclick="markFeedbackRead('${f.id}')">
+            onclick="markFeedbackRead('${escapeHtml(f.id)}')">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
                 <div style="display:flex;align-items:center;gap:8px;">
                     ${!f.read ? '<span style="background:rgba(74,222,128,.2);border:1px solid rgba(74,222,128,.4);color:#4ade80;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;">НОВЕ</span>' : ''}
-                    <span style="color:#93c5fd;font-weight:600;font-size:14px;">💬 ${f.name}</span>
+                    <span style="color:#93c5fd;font-weight:600;font-size:14px;">💬 ${escapeHtml(f.name)}</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;">
                     <span style="color:#8892a4;font-size:12px;">${dateStr}</span>
-                    <button onclick="event.stopPropagation();deleteFeedback('${f.id}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;font-size:12px;padding:3px 8px;cursor:pointer;">🗑</button>
+                    <button onclick="event.stopPropagation();deleteFeedback('${escapeHtml(f.id)}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;font-size:12px;padding:3px 8px;cursor:pointer;">🗑</button>
                 </div>
             </div>
-            <div style="color:#cbd5e1;font-size:14px;line-height:1.6;white-space:pre-wrap;">${f.text}</div>
+            <div style="color:#cbd5e1;font-size:14px;line-height:1.6;white-space:pre-wrap;">${escapeHtml(f.text)}</div>
         </div>`;
     }).join('');
 }
