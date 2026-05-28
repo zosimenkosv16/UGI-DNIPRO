@@ -625,7 +625,7 @@
     <div class="card">
         <h2>Головна сторінка</h2>
         <p>Поліцейськими головної інспекції ГУНП в Дніпропетровській області створено внутрішній цифровий помічник, що забезпечує швидкий та зручний доступ до основних законодавчих актів, алгоритмів дій, шаблонів документів, пам'яток та інших службових матеріалів.</p>
-        <div class="content" style="display:block;">
+        <div class="content" style="display:block;" data-always-open="1">
             <div style="text-align:center;margin-top:14px;">
                 <img src="ger.png" alt="Герб ГУНП в Дніпропетровській області" style="max-width:260px;width:100%;border-radius:12px;border:2px solid rgba(99,179,237,.2);box-shadow:0 0 30px rgba(59,130,246,.2);">
             </div>
@@ -641,7 +641,7 @@
     <div class="card">
         <h2>📋 Стратегія розвитку НПУ 2026-2030</h2>
         <p>Презентаційні матеріали Стратегії розвитку Національної поліції України на 2026–2030 роки.</p>
-        <div class="content" style="display:block;">
+        <div class="content" style="display:block;" data-always-open="1">
             <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:10px;">
 
                 <!-- Англійська версія -->
@@ -683,7 +683,7 @@
 <div id="shootingAlgorithms" class="tab searchable">
     <div class="card">
         <h2>🚨 Алгоритми дій поліцейських (реагування на обстріли)</h2>
-        <div class="content" style="display:block;">
+        <div class="content" style="display:block;" data-always-open="1">
             <div style="margin-bottom:16px;">
                 <img src="Polic.png" style="width:50%;max-width:420px;border-radius:10px;border:1px solid rgba(99,179,237,.2);display:block;margin:0 auto;">
             </div>
@@ -1331,7 +1331,7 @@
     <div class="card" style="cursor:default;">
         <h2>📄 Шаблони документів</h2>
         <p>Завантажте готові шаблони процесуальних документів</p>
-        <div class="content" style="display:block;">
+        <div class="content" style="display:block;" data-always-open="1">
 
             <div class="article">
                 <h3>📋 Протокол прийняття заяви про кримінальне правопорушення та іншу подію</h3>
@@ -1366,7 +1366,7 @@
 
     <div class="card" style="cursor:default;">
         <h2><img src="ger.png" style="height:28px;width:auto;vertical-align:middle;margin-right:8px;"> Впроваджені позитивні практики</h2>
-        <div class="content" style="display:block;">
+        <div class="content" style="display:block;" data-always-open="1">
 
             <div class="article">
                 <p>Управління головної інспекції ГУНП впроваджує позитивні практики з метою удосконалення службової діяльності підрозділів поліції, поширення ефективних форм і методів роботи, які мають практичний результат, зміцнення службової дисципліни, забезпечення законності, підвищення якості управлінських рішень, належної організації контролю, раціонального використання сил і засобів, своєчасного виявлення та усунення проблемних питань, створення належних і безпечних умов несення служби, підтримки поліцейських у виконанні покладених завдань, а також формування єдиного підходу до організації роботи, спрямованого на підвищення ефективності, відповідальності та результативності службової діяльності органів і підрозділів поліції.</p>
@@ -1493,7 +1493,7 @@
     <div class="card" style="cursor:default;">
         <h2>📩 Подати звернення</h2>
         <p>Заповніть форму нижче. Звернення буде надіслано на електронну пошту відповідального співробітника.</p>
-        <div class="content" style="display:block;">
+        <div class="content" style="display:block;" data-always-open="1">
 
             <div class="article" style="max-width:700px;margin:16px auto;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.35);border-left:4px solid #ef4444;">
                 <p style="color:#fca5a5;font-size:15px;font-weight:700;margin-bottom:10px;">‼️ ВАЖЛИВО</p>
@@ -1986,16 +1986,21 @@ function openTab(tabId, fromSearch){
     });
     if (AUTO_EXPAND_TABS.includes(tabId)) {
         tab.querySelectorAll(".card .content").forEach(c => c.style.display = "block");
+    } else {
+        // Явно закриваємо картки при відкритті вкладки (крім завжди відкритих)
+        tab.querySelectorAll(".card .content").forEach(c => {
+            if (!c.getAttribute('data-always-open') && (!c.style.display || c.style.display === "")) {
+                c.style.display = "none";
+            }
+        });
     }
 }
 
 function toggle(element){
     let content = element.querySelector(".content");
-    if(content.style.display === "block"){
-        content.style.display = "none";
-    } else {
-        content.style.display = "block";
-    }
+    const isVisible = content.style.display === "block" || 
+                      (content.style.display === "" && getComputedStyle(content).display !== "none");
+    content.style.display = isVisible ? "none" : "block";
 }
 
 function copyText(id, event){
@@ -2031,6 +2036,14 @@ function resetSearch(){
     let cards = document.querySelectorAll(".card");
     cards.forEach(card => {
         card.style.display = "block";
+        // Закриваємо вміст карток у вкладках що не є AUTO_EXPAND і не мають явного display:block
+        const tab = card.closest('.tab');
+        if (tab && !AUTO_EXPAND_TABS.includes(tab.id)) {
+            const content = card.querySelector(".content");
+            if (content && !content.getAttribute('data-always-open')) {
+                content.style.display = "none";
+            }
+        }
     });
 }
 
@@ -2677,7 +2690,8 @@ function initArticleAccordionsIn(container) {
         if (!h3) return;
 
         // Знаходимо або створюємо article-body
-        const bodyDiv = article.querySelector('.article-body');
+        // let (не const) бо нижче може бути перевизначення якщо bodyDiv не існує
+        let bodyDiv = article.querySelector('.article-body');
         if (!bodyDiv) {
             // Стаття ще не трансформована — трансформуємо
             article.classList.add('article-accordion');
