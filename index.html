@@ -1918,11 +1918,49 @@ function openMobileOverlay(tabId) {
         }));
     });
 
-    // Розгортаємо всі картки і прибираємо toggle — в оверлеї весь вміст видимий одразу
+    // Для adminPractice — блоки згорнуті, клік розгортає; для інших — весь вміст видимий одразу
+    const isAccordionTab = (tabId === 'adminPractice');
     body.querySelectorAll('.card').forEach(function(card) {
-        card.removeAttribute('onclick');
         const c = card.querySelector('.content');
-        if (c) c.style.display = 'block';
+        if (isAccordionTab) {
+            // Закриваємо блок, додаємо toggle-поведінку
+            if (c && !c.getAttribute('data-always-open')) {
+                c.style.display = 'none';
+            }
+            // Додаємо стрілку до заголовку картки
+            const h2 = card.querySelector('h2');
+            if (h2 && !h2.querySelector('.mob-card-arr')) {
+                const arr = document.createElement('span');
+                arr.className = 'mob-card-arr';
+                arr.textContent = '▶';
+                arr.style.cssText = 'margin-left:auto;font-size:16px;color:#4b87d8;transition:transform .25s;flex-shrink:0;';
+                h2.style.display = 'flex';
+                h2.style.alignItems = 'center';
+                h2.style.justifyContent = 'space-between';
+                h2.appendChild(arr);
+            }
+            // Робимо заголовок картки клікабельним
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', function(e) {
+                // Не реагувати якщо клік по кнопці/посиланню всередині
+                if (e.target.closest('button, a, .copy-btn, .pdf-btn')) return;
+                if (!c) return;
+                const isOpen = c.style.display === 'block';
+                // Закриваємо всі інші картки
+                body.querySelectorAll('.card').forEach(function(oc) {
+                    const oc_c = oc.querySelector('.content');
+                    if (oc_c && !oc_c.getAttribute('data-always-open')) oc_c.style.display = 'none';
+                    const oc_arr = oc.querySelector('.mob-card-arr');
+                    if (oc_arr) oc_arr.style.transform = 'rotate(0deg)';
+                });
+                c.style.display = isOpen ? 'none' : 'block';
+                const arr = card.querySelector('.mob-card-arr');
+                if (arr) arr.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+            });
+        } else {
+            card.removeAttribute('onclick');
+            if (c) c.style.display = 'block';
+        }
     });
 
     // Ініціалізуємо акордеони статей всередині оверлею
