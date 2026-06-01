@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ГУНП в Дніпропетровській області</title>
 
+    <!-- Захист авторських прав -->
+    <meta name="author" content="Управління головної інспекції ГУНП в Дніпропетровській області">
+    <meta name="copyright" content="© 2026 Управління головної інспекції ГУНП в Дніпропетровській області. Усі права захищено.">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -519,6 +524,62 @@
             transform: scale(1.04);
             box-shadow: 0 0 20px rgba(59,130,246,.4);
         }
+    
+
+        /* === ЗАХИСТ АВТОРСЬКИХ ПРАВ === */
+        body, .card, .article, .content, .fabula-box, .subtitle, .nav, .nav-mobile {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        input, textarea, select, [contenteditable="true"] {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+
+        .copyright-footer {
+            position: relative;
+            z-index: 1;
+            margin: 28px 0 8px;
+            padding: 14px 16px;
+            border: 1px solid rgba(99,179,237,.18);
+            border-radius: 12px;
+            background: rgba(17,24,39,.72);
+            color: #8892a4;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        #copyright-alert {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%) translateY(20px);
+            z-index: 10001;
+            max-width: calc(100vw - 32px);
+            padding: 12px 18px;
+            border: 1px solid rgba(99,179,237,.35);
+            border-radius: 10px;
+            background: rgba(15,30,53,.96);
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0,0,0,.45);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s, transform .2s;
+        }
+
+        #copyright-alert.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -2969,5 +3030,80 @@ function clearAllFeedback() {
     </div>
 </div>
 
+
+
+<div class="copyright-footer">
+    © 2026 Управління головної інспекції ГУНП в Дніпропетровській області. Усі права захищено.
+    Копіювання, поширення або використання матеріалів сайту без дозволу заборонено.
+</div>
+
+<div id="copyright-alert">Дію обмежено. Матеріали сайту захищені авторським правом.</div>
+
+
+<script>
+(function () {
+    const alertBox = document.getElementById('copyright-alert');
+    let alertTimer = null;
+
+    function showCopyrightAlert() {
+        if (!alertBox) return;
+        alertBox.classList.add('show');
+        clearTimeout(alertTimer);
+        alertTimer = setTimeout(function () {
+            alertBox.classList.remove('show');
+        }, 1800);
+    }
+
+    function isEditableElement(element) {
+        return element && (
+            element.tagName === 'INPUT' ||
+            element.tagName === 'TEXTAREA' ||
+            element.tagName === 'SELECT' ||
+            element.isContentEditable
+        );
+    }
+
+    document.addEventListener('contextmenu', function (event) {
+        if (!isEditableElement(event.target)) {
+            event.preventDefault();
+            showCopyrightAlert();
+        }
+    });
+
+    document.addEventListener('copy', function (event) {
+        if (!isEditableElement(event.target)) {
+            event.preventDefault();
+            showCopyrightAlert();
+        }
+    });
+
+    document.addEventListener('cut', function (event) {
+        if (!isEditableElement(event.target)) {
+            event.preventDefault();
+            showCopyrightAlert();
+        }
+    });
+
+    document.addEventListener('dragstart', function (event) {
+        if (!isEditableElement(event.target)) {
+            event.preventDefault();
+            showCopyrightAlert();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        const key = String(event.key).toLowerCase();
+        const blocked =
+            event.key === 'F12' ||
+            (event.ctrlKey && ['u', 's', 'p', 'c', 'x'].includes(key)) ||
+            (event.ctrlKey && event.shiftKey && ['i', 'j', 'c'].includes(key));
+
+        if (blocked && !isEditableElement(event.target)) {
+            event.preventDefault();
+            showCopyrightAlert();
+        }
+    });
+})();
+</script>
 </body>
 </html>
