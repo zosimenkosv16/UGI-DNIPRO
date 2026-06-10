@@ -579,7 +579,86 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+.weapon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 16px;
+}
 
+.weapon-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.weapon-item:hover {
+    border-color: rgba(59,130,246,.55);
+    box-shadow: 0 0 22px rgba(59,130,246,.25);
+    transform: translateY(-2px);
+}
+
+.weapon-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid rgba(99,179,237,.18);
+    padding: 6px;
+}
+
+.weapon-item h3 {
+    margin-top: 12px;
+    color: #93c5fd;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+#weapon-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: rgba(0,0,0,.9);
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    cursor: zoom-out;
+}
+
+#weapon-lightbox.open {
+    display: flex;
+}
+
+#weapon-lightbox img {
+    max-width: 96vw;
+    max-height: 94vh;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 50px rgba(59,130,246,.35);
+}
+
+#weapon-lightbox-close {
+    position: fixed;
+    top: 16px;
+    right: 22px;
+    z-index: 10060;
+    color: #fff;
+    font-size: 38px;
+    font-weight: 700;
+    cursor: pointer;
+    opacity: .85;
+}
+
+#weapon-lightbox-close:hover {
+    opacity: 1;
+}
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -592,6 +671,11 @@
 <div id="photo-lightbox" onclick="closeLightbox()">
     <span id="photo-lightbox-close" onclick="closeLightbox()">&times;</span>
     <img id="photo-lightbox-img" src="" alt="">
+</div>
+<!-- LIGHTBOX для плакатів зброї -->
+<div id="weapon-lightbox" onclick="closeWeaponImage()">
+    <span id="weapon-lightbox-close" onclick="closeWeaponImage()">&times;</span>
+    <img id="weapon-lightbox-img" src="" alt="">
 </div>
 
 <!-- Фіксована кнопка входу у верхньому правому куті -->
@@ -637,6 +721,7 @@
         <div onclick="openTabMobile('curators','👤 Куратори підрозділів')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">👤 Куратори підрозділів</div>
         <div onclick="openTabMobile('strategy2026','📋 Стратегія НПУ 2026-2030')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">📋 Стратегія розвитку НПУ 2026-2030</div>
         <div onclick="openTabMobile('shootingAlgorithms','🚨 Алгоритми дій поліцейських')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">🚨 Алгоритми дій поліцейських</div>
+	<div onclick="openTabMobile('weaponTTH','🔫 Матеріальна частина зброї')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">🔫 Матеріальна частина зброї</div>
         <div onclick="openTabMobile('appeal','📩 Подати звернення')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">📩 Подати звернення</div>
         <div onclick="openTabMobile('vacancies','💼 Вакантні посади УГІ ГУНП')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;">💼 Вакантні посади УГІ ГУНП</div>
     </div>
@@ -662,6 +747,7 @@
     <button onclick="openTab('curators')">Куратори підрозділів</button>
     <button onclick="openTab('strategy2026')">📋 Стратегія розвитку НПУ 2026-2030</button>
     <button onclick="openTab('shootingAlgorithms')">🚨 Алгоритми дій поліцейських (реагування на обстріли)</button>
+    <button onclick="openTab('weaponTTH')">🔫 Матеріальна частина зброї (ТТХ зброї)</button>
     <button onclick="openTab('appeal')">📩 Подати звернення</button>
     <button onclick="openTab('vacancies')">💼 Вакантні посади УГІ ГУНП в Дніпропетровській області</button>
 </div>
@@ -741,6 +827,81 @@
         </div>
     </div>
 </div>
+<div id="weaponTTH" class="tab searchable">
+    <div class="card">
+        <h2>🔫 Матеріальна частина зброї (ТТХ зброї)</h2>
+        <p>Довідковий розділ із плакатами щодо матеріальної частини та тактико-технічних характеристик окремих зразків зброї.</p>
+
+        <div class="content" style="display:block;" data-always-open="1">
+
+            <div class="weapon-grid">
+
+                <div class="weapon-item" onclick="openWeaponImage('5,45 мм АКС-74У.jpeg')">
+                    <img src="5,45 мм АКС-74У.jpeg" alt="Автомат АКС-74У">
+                    <h3>Автомат АКС-74У</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('5,45 мм автомат калашникова (АК-74).jpeg')">
+                    <img src="5,45 мм автомат калашникова (АК-74).jpeg" alt="Автомат АК-74">
+                    <h3>Автомат АК-74</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('7,62 автомат Калашникова модернізований.jpeg')">
+                    <img src="7,62 автомат Калашникова модернізований.jpeg" alt="Автомат АКМ">
+                    <h3>Автомат АКМ</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('CANIK TP9 ELITE-S COMBAT.jpeg')">
+                    <img src="CANIK TP9 ELITE-S COMBAT.jpeg" alt="Пістолет CANIK TP9">
+                    <h3>Пістолет CANIK TP9</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Пістолет GLOCK 17.jpeg')">
+                    <img src="Пістолет GLOCK 17.jpeg" alt="Пістолет GLOCK 17">
+                    <h3>Пістолет GLOCK 17</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Плакат Форт-21.03 (84х72см) НПУ.jpg')">
+                    <img src="Плакат Форт-21.03 (84х72см) НПУ.jpg" alt="Пістолет Форт-21.03">
+                    <h3>Пістолет Форт-21.03</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Плакат Форт-19 (84х72см) НПУ.jpg')">
+                    <img src="Плакат Форт-19 (84х72см) НПУ.jpg" alt="Пістолет Форт-19">
+                    <h3>Пістолет Форт-19</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('ФОРТ-17.jpg')">
+                    <img src="ФОРТ-17.jpg" alt="Пістолет Форт-17">
+                    <h3>Пістолет Форт-17</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Плакат Форт-14ПП (84х72см) НПУ.jpg')">
+                    <img src="Плакат Форт-14ПП (84х72см) НПУ.jpg" alt="Пістолет Форт-14ПП">
+                    <h3>Пістолет Форт-14ПП</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Плакат Форт-12 (84х72см) НПУ.jpg')">
+                    <img src="Плакат Форт-12 (84х72см) НПУ.jpg" alt="Пістолет Форт-12">
+                    <h3>Пістолет Форт-12</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Плакат АПС (84х72см) НПУ.jpg')">
+                    <img src="Плакат АПС (84х72см) НПУ.jpg" alt="Автоматичний пістолет Стечкіна">
+                    <h3>Автоматичний пістолет Стечкіна</h3>
+                </div>
+
+                <div class="weapon-item" onclick="openWeaponImage('Пістолет Макарова.jpg')">
+                    <img src="Пістолет Макарова.jpg" alt="Пістолет Макарова">
+                    <h3>Пістолет Макарова</h3>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div id="shootingAlgorithms" class="tab searchable">
     <div class="card">
         <h2>🚨 Алгоритми дій поліцейських (реагування на обстріли)</h2>
@@ -1928,6 +2089,7 @@ const TAB_NAMES = {
     curators:           '👤 Куратори підрозділів',
     strategy2026:       '📋 Стратегія НПУ 2026-2030',
     shootingAlgorithms: '🚨 Алгоритми (обстріли)',
+    weaponTTH: '🔫 Матеріальна частина зброї',
     appeal:             '📩 Подати звернення',
     vacancies:          '💼 Вакантні посади УГІ ГУНП'
 };
@@ -2409,6 +2571,7 @@ const TAB_LABELS = {
     curators:           '👤 Куратори підрозділів',
     strategy2026:       '📋 Стратегія НПУ 2026-2030',
     shootingAlgorithms: '🚨 Алгоритми (обстріли)',
+    weaponTTH:          '🔫 Матеріальна частина зброї',
     appeal:             '📩 Подати звернення',
     vacancies:          '💼 Вакантні посади УГІ ГУНП'
 };
@@ -3105,5 +3268,40 @@ function clearAllFeedback() {
     });
 })();
 </script>
+    <script>
+function openWeaponImage(src) {
+    const lightbox = document.getElementById('weapon-lightbox');
+    const img = document.getElementById('weapon-lightbox-img');
+
+    if (!lightbox || !img) {
+        console.error('Не знайдено weapon-lightbox або weapon-lightbox-img');
+        return;
+    }
+
+    img.src = src;
+    lightbox.classList.add('open');
+}
+
+function closeWeaponImage() {
+    const lightbox = document.getElementById('weapon-lightbox');
+    const img = document.getElementById('weapon-lightbox-img');
+
+    if (!lightbox || !img) return;
+
+    lightbox.classList.remove('open');
+    img.src = '';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const weaponImg = document.getElementById('weapon-lightbox-img');
+
+    if (weaponImg) {
+        weaponImg.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
+});
+</script>
+
 </body>
 </html>
