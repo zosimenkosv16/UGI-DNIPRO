@@ -713,7 +713,8 @@
     </div>
     <div id="mobile-nav-dropdown" style="display:none;margin-top:6px;background:#1a2235;border:1px solid rgba(99,179,237,.3);border-radius:10px;overflow:hidden;">
         <div onclick="openTabMobile('home','🏠 Головна')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">🏠 Головна</div>
-        <div onclick="openTabMobile('adminPractice','⚖️ Адміністративна практика')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">⚖️ Адміністративна практика</div>
+<div onclick="openTabMobile('news','📰 Новини та соціальні мережі 🌐')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">📰 Новини та соціальні мережі 🌐</div>
+	        <div onclick="openTabMobile('adminPractice','⚖️ Адміністративна практика')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">⚖️ Адміністративна практика</div>
         <div onclick="openTabMobile('policeAlgorithms','📋 Нормативна база')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">📋 Нормативна база</div>
         <div onclick="openTabMobile('stateLeadership','👥 Керівництво')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">👥 Керівництво</div>
         <div onclick="openTabMobile('templates','📝 Шаблони документів')" style="padding:14px 16px;color:#e2e8f0;font-size:14px;font-weight:600;border-bottom:1px solid rgba(99,179,237,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;">📝 Шаблони документів</div>
@@ -739,6 +740,7 @@
 <!-- Десктопна навігація (кнопки) -->
 <div class="nav">
     <button onclick="openTab('home')">Головна</button>
+    <button onclick="openTab('news')">📰 Новини та соціальні мережі 🌐</button>
     <button onclick="openTab('adminPractice')">Адміністративна практика</button>
     <button onclick="openTab('policeAlgorithms')">Нормативна база</button>
     <button onclick="openTab('stateLeadership')">Керівництво</button>
@@ -783,7 +785,303 @@
     </div>
 </div>
 
+<div id="news" class="tab searchable">
+    <div class="card">
+        <h2>📰 Новини та соціальні мережі 🌐</h2>
+        <p>Офіційні сайти, сторінки та канали для швидкого доступу до актуальних новин, офіційних повідомлень та інформаційних матеріалів.</p>
 
+        <div class="content" style="display:block;" data-always-open="1">
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(59,130,246,.14),rgba(99,102,241,.10));
+                border:1px solid rgba(99,179,237,.32);
+                border-left:4px solid #3b82f6;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(59,130,246,.12);
+            ">
+                <a href="https://dp.npu.gov.ua/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        📰 Офіційний сайт ГУНП в Дніпропетровській області
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Офіційний сайт ГУНП в Дніпропетровській області для перегляду актуальних новин, повідомлень та офіційної інформації.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#3b82f6,#6366f1);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(59,130,246,.35);
+                    ">
+                        🌐 Перейти на сайт
+                    </span>
+                </a>
+            </div>
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(59,130,246,.14),rgba(99,102,241,.10));
+                border:1px solid rgba(99,179,237,.32);
+                border-left:4px solid #3b82f6;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(59,130,246,.12);
+            ">
+                <a href="https://www.facebook.com/share/g/1BN6tpkyYT/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        👥 УГІ ГУНП в Дніпропетровській області
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Сторінка у Facebook УГІ ГУНП в Дніпропетровській області для перегляду актуальної службової інформації, повідомлень та матеріалів.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#3b82f6,#6366f1);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(59,130,246,.35);
+                    ">
+                        🌐 Відкрити в Facebook
+                    </span>
+                </a>
+            </div>
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(59,130,246,.14),rgba(37,99,235,.10));
+                border:1px solid rgba(59,130,246,.32);
+                border-left:4px solid #2563eb;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(59,130,246,.12);
+            ">
+                <a href="https://www.facebook.com/PoliceDniproRegion/?locale=uk_UA" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        📘 Facebook ГУНП в Дніпропетровській області
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Офіційна сторінка ГУНП в Дніпропетровській області у Facebook для перегляду актуальних новин, повідомлень та офіційної інформації.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#2563eb,#3b82f6);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(59,130,246,.35);
+                    ">
+                        📘 Відкрити в Facebook
+                    </span>
+                </a>
+            </div>
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(14,165,233,.14),rgba(59,130,246,.10));
+                border:1px solid rgba(14,165,233,.32);
+                border-left:4px solid #0ea5e9;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(14,165,233,.12);
+            ">
+                <a href="https://t.me/gunpvdp" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        ✈️ Telegram ГУНП в Дніпропетровській області
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Офіційний Telegram-канал ГУНП в Дніпропетровській області для перегляду актуальних новин, повідомлень та офіційної інформації.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#0ea5e9,#3b82f6);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(14,165,233,.35);
+                    ">
+                        ✈️ Відкрити в Telegram
+                    </span>
+                </a>
+            </div>
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(59,130,246,.14),rgba(99,102,241,.10));
+                border:1px solid rgba(99,179,237,.32);
+                border-left:4px solid #3b82f6;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(59,130,246,.12);
+            ">
+                <a href="https://www.facebook.com/police.human.right?locale=uk_UA" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        📘 Департамент головної інспекції та дотримання прав людини НПУ
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Офіційна сторінка у Facebook Департаменту головної інспекції та дотримання прав людини НПУ.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#3b82f6,#6366f1);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(59,130,246,.35);
+                    ">
+                        🌐 Відкрити в Facebook
+                    </span>
+                </a>
+            </div>
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(236,72,153,.14),rgba(168,85,247,.10));
+                border:1px solid rgba(236,72,153,.32);
+                border-left:4px solid #ec4899;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(236,72,153,.12);
+            ">
+                <a href="https://www.instagram.com/dgidpl_npu?igsh=eHJjZXAyd2Y4NWcw&utm_source=qr" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        📸 Instagram Департаменту головної інспекції та дотримання прав людини НПУ
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Офіційна сторінка Департаменту головної інспекції та дотримання прав людини НПУ в Instagram.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#ec4899,#a855f7);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(236,72,153,.35);
+                    ">
+                        📸 Відкрити в Instagram
+                    </span>
+                </a>
+            </div>
+
+            <div class="article" style="
+                padding:0;
+                overflow:hidden;
+                background:linear-gradient(135deg,rgba(20,184,166,.14),rgba(59,130,246,.10));
+                border:1px solid rgba(20,184,166,.32);
+                border-left:4px solid #14b8a6;
+                border-radius:14px;
+                box-shadow:0 0 22px rgba(20,184,166,.12);
+            ">
+                <a href="https://www.tiktok.com/@dgidpl_npu?_r=1&_t=ZS-95seNc9Ib6A" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    padding:18px 20px;
+                ">
+                    <h3 style="font-size:17px;color:#ffffff;margin-bottom:8px;">
+                        🎵 TikTok Департаменту головної інспекції та дотримання прав людини НПУ
+                    </h3>
+
+                    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin:0 0 12px;">
+                        Офіційна сторінка Департаменту головної інспекції та дотримання прав людини НПУ в TikTok.
+                    </p>
+
+                    <span style="
+                        display:inline-flex;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:11px 18px;
+                        border-radius:10px;
+                        background:linear-gradient(135deg,#14b8a6,#3b82f6);
+                        color:#ffffff;
+                        font-size:14px;
+                        font-weight:700;
+                        box-shadow:0 4px 18px rgba(20,184,166,.35);
+                    ">
+                        🎵 Відкрити в TikTok
+                    </span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div id="strategy2026" class="tab searchable">
     <div class="card">
         <h2>📋 Стратегія розвитку НПУ 2026-2030</h2>
@@ -2083,6 +2381,7 @@ function updateMobileSelect(tabId) { /* no-op */ }
 
 const TAB_NAMES = {
     home:               '🏠 Головна',
+    news:               '📰 Новини та соціальні мережі 🌐',
     adminPractice:      '⚖️ Адміністративна практика',
     policeAlgorithms:   '📋 Нормативна база',
     stateLeadership:    '👥 Керівництво',
