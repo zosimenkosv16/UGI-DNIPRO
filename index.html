@@ -3388,71 +3388,319 @@ function clearVisitorStats() {
         .then(() => alert('✅ Статистику відвідувань очищено.'))
         .catch(e => alert('❌ Помилка: ' + e.message));
 }
+function filterAppeals() {
+    renderAppeals();
+}
 
 function renderAppeals() {
     const searchVal = (document.getElementById('cab-search')?.value || '').toLowerCase();
     const filterVal = document.getElementById('cab-filter')?.value || 'all';
-    let appeals = realtimeAppeals.slice().sort((a,b) => new Date(b.date) - new Date(a.date));
 
-    if (filterVal === 'new')  appeals = appeals.filter(a => !a.read);
-    if (filterVal === 'read') appeals = appeals.filter(a =>  a.read);
+    let appeals = realtimeAppeals.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (filterVal === 'new') appeals = appeals.filter(a => !a.read);
+    if (filterVal === 'read') appeals = appeals.filter(a => a.read);
+
     if (searchVal) {
         appeals = appeals.filter(a =>
-            (a.name||'').toLowerCase().includes(searchVal) ||
-            (a.pib||'').toLowerCase().includes(searchVal) ||
-            (a.subject||'').toLowerCase().includes(searchVal) ||
-            (a.message||'').toLowerCase().includes(searchVal) ||
-            (a.email||'').toLowerCase().includes(searchVal)
+            (a.name || '').toLowerCase().includes(searchVal) ||
+            (a.pib || '').toLowerCase().includes(searchVal) ||
+            (a.email || '').toLowerCase().includes(searchVal) ||
+            (a.subject || '').toLowerCase().includes(searchVal) ||
+            (a.message || '').toLowerCase().includes(searchVal)
         );
     }
 
     const list = document.getElementById('appeals-list');
+
     if (!appeals.length) {
-        list.innerHTML = `<div style="text-align:center;padding:60px 20px;color:#8892a4;">
-            <div style="font-size:48px;margin-bottom:12px;">📭</div>
-            <p style="font-size:16px;">Звернень не знайдено</p>
-        </div>`;
+        list.innerHTML = `
+            <div style="
+                text-align:center;
+                padding:60px 20px;
+                border-radius:20px;
+                background:linear-gradient(135deg,rgba(17,24,39,.98),rgba(30,45,69,.75));
+                border:1px dashed rgba(99,179,237,.30);
+                box-shadow:0 0 24px rgba(59,130,246,.08);
+            ">
+                <div style="font-size:58px;margin-bottom:12px;">📭</div>
+                <div style="color:#fff;font-size:20px;font-weight:800;">Звернень не знайдено</div>
+                <div style="color:#8892a4;font-size:14px;margin-top:8px;">
+                    Немає звернень за обраним фільтром або пошуковим запитом.
+                </div>
+            </div>
+        `;
         return;
     }
 
-    const subjectColors = {
-        'Скарга': '#f87171',
-        'Пропозиція щодо покращення роботи': '#4ade80',
-        'Запит на інформацію': '#93c5fd',
-        'Повідомлення про корупцію': '#f59e0b',
-        'Інше': '#a78bfa'
+    const subjectMap = {
+        'Скарга': { icon: '⚠️', color: '#f87171', bg: 'rgba(248,113,113,.13)' },
+        'Пропозиція щодо покращення роботи': { icon: '💡', color: '#4ade80', bg: 'rgba(74,222,128,.12)' },
+        'Запит на інформацію': { icon: '📄', color: '#60a5fa', bg: 'rgba(96,165,250,.13)' },
+        'Повідомлення про корупцію': { icon: '🚨', color: '#f59e0b', bg: 'rgba(245,158,11,.14)' },
+        'Інше': { icon: '📌', color: '#a78bfa', bg: 'rgba(167,139,250,.13)' }
     };
 
-    list.innerHTML = appeals.map(a => {
-        const color = subjectColors[a.subject] || '#8892a4';
-        const dt = new Date(a.date);
-        const dateStr = dt.toLocaleDateString('uk-UA') + ' ' + dt.toLocaleTimeString('uk-UA', {hour:'2-digit', minute:'2-digit'});
-        return `<div onclick="viewAppeal('${escapeHtml(a.id)}')" style="
-            background:#111827;border:1px solid ${a.read ? 'rgba(99,179,237,.1)' : 'rgba(99,179,237,.3)'};
-            border-left:4px solid ${color};border-radius:12px;padding:16px 20px;margin-bottom:10px;
-            cursor:pointer;transition:all .2s;opacity:${a.read ? '.7' : '1'};"
-            onmouseover="this.style.borderColor='rgba(99,179,237,.5)';this.style.transform='translateY(-1px)'"
-            onmouseout="this.style.borderColor='${a.read ? 'rgba(99,179,237,.1)' : 'rgba(99,179,237,.3)'}';this.style.transform='none'">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
-                <div style="flex:1;min-width:0;">
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
-                        ${!a.read ? '<span style="background:rgba(74,222,128,.2);border:1px solid rgba(74,222,128,.4);color:#4ade80;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;">НОВЕ</span>' : ''}
-                        <span style="background:rgba(99,179,237,.1);border:1px solid rgba(99,179,237,.2);color:${color};font-size:11px;padding:2px 8px;border-radius:20px;">${escapeHtml(a.subject)}</span>
-                    </div>
-                    <div style="color:#e2e8f0;font-weight:600;font-size:15px;margin-bottom:4px;">${escapeHtml(a.name)}</div>
-                    <div style="color:#8892a4;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(a.message.substring(0,120))}${a.message.length>120?'...':''}</div>
-                </div>
-                <div style="text-align:right;flex-shrink:0;">
-                    <div style="color:#8892a4;font-size:12px;">${dateStr}</div>
-                    ${a.email ? `<div style="color:#93c5fd;font-size:12px;margin-top:2px;">${escapeHtml(a.email)}</div>` : ''}
+    list.innerHTML = `
+    <div style="
+        padding:18px;
+        border-radius:22px;
+        background:
+            radial-gradient(circle at top left,rgba(59,130,246,.16),transparent 34%),
+            linear-gradient(135deg,rgba(15,23,42,.96),rgba(17,24,39,.92));
+        border:1px solid rgba(99,179,237,.28);
+        box-shadow:0 0 30px rgba(59,130,246,.12), inset 0 0 0 1px rgba(255,255,255,.02);
+    ">
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            flex-wrap:wrap;
+            margin-bottom:16px;
+            padding-bottom:14px;
+            border-bottom:1px solid rgba(99,179,237,.16);
+        ">
+            <div>
+                <div style="color:#fff;font-size:20px;font-weight:900;">📩 Звернення</div>
+                <div style="color:#8892a4;font-size:13px;margin-top:4px;">
+                    Перелік звернень, поданих через сайт
                 </div>
             </div>
-        </div>`;
-    }).join('');
+
+            <div style="
+                padding:7px 12px;
+                border-radius:999px;
+                background:rgba(59,130,246,.14);
+                border:1px solid rgba(59,130,246,.35);
+                color:#93c5fd;
+                font-size:13px;
+                font-weight:800;
+            ">
+                Усього: ${appeals.length}
+            </div>
+        </div>
+` + appeals.map(a => {
+        const cfg = subjectMap[a.subject] || { icon: '📩', color: '#93c5fd', bg: 'rgba(147,197,253,.12)' };
+        const dt = new Date(a.date);
+        const dateStr = dt.toLocaleDateString('uk-UA') + ' о ' + dt.toLocaleTimeString('uk-UA', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        const message = a.message || '';
+        const shortMsg = message.length > 190 ? message.slice(0, 190) + '...' : message;
+
+        return `
+            <div onclick="viewAppeal('${escapeHtml(a.id)}')" style="
+                position:relative;
+                margin-bottom:18px;
+                padding:0;
+                border-radius:20px;
+                overflow:hidden;
+                cursor:pointer;
+                background:
+                    radial-gradient(circle at top right, ${cfg.color}22, transparent 32%),
+                    linear-gradient(135deg,rgba(17,24,39,.98),rgba(30,45,69,.86));
+                border:1px solid ${a.read ? 'rgba(99,179,237,.18)' : cfg.color};
+                border-left:5px solid ${cfg.color};
+                box-shadow:${a.read ? '0 8px 24px rgba(0,0,0,.22)' : '0 0 30px ' + cfg.color + '30'};
+                transition:transform .18s, box-shadow .18s, border-color .18s;
+            "
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 14px 36px rgba(0,0,0,.34), 0 0 28px ${cfg.color}35'"
+            onmouseout="this.style.transform='none';this.style.boxShadow='${a.read ? '0 8px 24px rgba(0,0,0,.22)' : '0 0 30px ' + cfg.color + '30'}'">
+
+                <div style="
+                    display:flex;
+                    align-items:flex-start;
+                    justify-content:space-between;
+                    gap:14px;
+                    padding:18px 18px 14px;
+                    border-bottom:1px solid rgba(99,179,237,.10);
+                ">
+                    <div style="display:flex;gap:14px;align-items:flex-start;min-width:0;">
+                        <div style="
+                            width:52px;
+                            height:52px;
+                            min-width:52px;
+                            border-radius:16px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            background:${cfg.bg};
+                            border:1px solid ${cfg.color}66;
+                            color:#fff;
+                            font-size:25px;
+                            box-shadow:0 0 18px ${cfg.color}22;
+                        ">${cfg.icon}</div>
+
+                        <div style="min-width:0;">
+                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <span style="
+                                    display:inline-flex;
+                                    align-items:center;
+                                    gap:6px;
+                                    padding:5px 11px;
+                                    border-radius:999px;
+                                    background:${cfg.bg};
+                                    color:${cfg.color};
+                                    border:1px solid ${cfg.color}55;
+                                    font-size:12px;
+                                    font-weight:800;
+                                ">
+                                    ${cfg.icon} ${escapeHtml(a.subject || 'Без теми')}
+                                </span>
+
+                                ${!a.read ? `
+                                    <span style="
+                                        padding:5px 10px;
+                                        border-radius:999px;
+                                        background:rgba(59,130,246,.18);
+                                        color:#93c5fd;
+                                        border:1px solid rgba(59,130,246,.38);
+                                        font-size:12px;
+                                        font-weight:800;
+                                    ">● Нове</span>
+                                ` : `
+                                    <span style="
+                                        padding:5px 10px;
+                                        border-radius:999px;
+                                        background:rgba(148,163,184,.10);
+                                        color:#94a3b8;
+                                        border:1px solid rgba(148,163,184,.20);
+                                        font-size:12px;
+                                        font-weight:700;
+                                    ">✓ Переглянуто</span>
+                                `}
+                            </div>
+
+                            <div style="
+                                margin-top:11px;
+                                color:#fff;
+                                font-size:18px;
+                                font-weight:800;
+                                line-height:1.35;
+                            ">
+                                ${escapeHtml(a.name || 'Підрозділ не вказано')}
+                            </div>
+
+                            <div style="
+                                margin-top:6px;
+                                display:flex;
+                                gap:10px;
+                                flex-wrap:wrap;
+                                color:#cbd5e1;
+                                font-size:13px;
+                                line-height:1.45;
+                            ">
+                                <span>👤 ${escapeHtml(a.pib || 'ПІБ не вказано')}</span>
+                                <span>✉️ ${escapeHtml(a.email || 'email не вказано')}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="
+                        text-align:right;
+                        color:#8892a4;
+                        font-size:12px;
+                        line-height:1.45;
+                        white-space:nowrap;
+                    ">
+                        🕒 ${dateStr}
+                    </div>
+                </div>
+
+                <div style="
+    padding:16px 18px;
+    background:rgba(15,23,42,.34);
+">
+    <div style="
+        position:relative;
+        padding:15px 16px 15px 18px;
+        border-radius:14px;
+        background:linear-gradient(135deg,rgba(15,23,42,.88),rgba(30,45,69,.55));
+        border:1px solid rgba(99,179,237,.22);
+        border-left:4px solid ${cfg.color};
+        box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 18px rgba(59,130,246,.08);
+    ">
+        <div style="
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:#93c5fd;
+            font-size:12px;
+            font-weight:800;
+            text-transform:uppercase;
+            letter-spacing:.4px;
+            margin-bottom:8px;
+        ">
+            📝 Текст звернення
+        </div>
+
+        <div style="
+            color:#e2e8f0;
+            font-size:14px;
+            line-height:1.65;
+            white-space:pre-wrap;
+        ">
+            ${escapeHtml(shortMsg || 'Текст звернення відсутній')}
+        </div>
+    </div>
+</div>
+
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap:12px;
+                    flex-wrap:wrap;
+                    padding:12px 18px 16px;
+                ">
+                    <span style="
+                        color:#8892a4;
+                        font-size:12px;
+                    ">
+                        Натисніть на картку, щоб переглянути звернення повністю
+                    </span>
+
+                    <button onclick="event.stopPropagation();deleteAppeal('${escapeHtml(a.id)}')" style="
+                        display:inline-flex;
+                        align-items:center;
+                        gap:6px;
+                        padding:8px 13px;
+                        border-radius:10px;
+                        background:rgba(248,113,113,.10);
+                        border:1px solid rgba(248,113,113,.35);
+                        color:#f87171;
+                        font-size:13px;
+                        font-weight:800;
+                        cursor:pointer;
+                        transition:background .18s, transform .18s;
+                    "
+                    onmouseover="this.style.background='rgba(248,113,113,.18)';this.style.transform='translateY(-1px)'"
+                    onmouseout="this.style.background='rgba(248,113,113,.10)';this.style.transform='none'">
+                        🗑 Видалити
+                    </button>
+                </div>
+            </div>
+        `;
+        }).join('') + `
+    </div>
+`;
 }
+function deleteAppeal(id) {
+    if (!confirm('Видалити це звернення?')) return;
 
-function filterAppeals() { renderAppeals(); }
+    if (!appealsRef) {
+        alert('Помилка з’єднання з базою даних');
+        return;
+    }
 
+    appealsRef.child(id).remove()
+        .catch(function(e) {
+            alert('Помилка видалення: ' + e.message);
+        });
+}
 function viewAppeal(id) {
     const a = realtimeAppeals.find(x => x.id === id);
     if (!a) return;
@@ -3759,33 +4007,141 @@ function escapeHtml(str) {
 function renderFeedback() {
     const el = document.getElementById('feedback-list');
     if (!el) return;
-    const items = realtimeFeedback.slice().sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    const items = realtimeFeedback.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
     if (!items.length) {
         el.innerHTML = '<div style="text-align:center;padding:50px 20px;color:#8892a4;"><div style="font-size:42px;margin-bottom:10px;">💬</div><p>Відгуків поки немає</p></div>';
+        updateFeedbackStats();
         return;
     }
+
     el.innerHTML = items.map(f => {
         const dt = new Date(f.date);
-        const dateStr = dt.toLocaleDateString('uk-UA', {day:'numeric',month:'short',year:'numeric'}) + ' ' + dt.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
-        return `<div style="background:#1a2235;border:1px solid ${f.read?'rgba(99,179,237,.1)':'rgba(99,179,237,.3)'};border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;"
+        const dateStr = dt.toLocaleDateString('uk-UA', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        }) + ' ' + dt.toLocaleTimeString('uk-UA', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        return `<div style="
+                background:linear-gradient(135deg,rgba(17,24,39,.98),rgba(30,45,69,.78));
+                border:1px solid ${f.read ? 'rgba(99,179,237,.16)' : 'rgba(59,130,246,.36)'};
+                border-radius:16px;
+                padding:14px;
+                margin-bottom:14px;
+                cursor:pointer;
+                box-shadow:${f.read ? '0 8px 20px rgba(0,0,0,.18)' : '0 0 24px rgba(59,130,246,.14)'};
+            "
             onclick="markFeedbackRead('${escapeHtml(f.id)}')">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                    ${!f.read ? '<span style="background:rgba(74,222,128,.2);border:1px solid rgba(74,222,128,.4);color:#4ade80;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;">НОВЕ</span>' : ''}
-                    <span style="color:#93c5fd;font-weight:600;font-size:14px;">💬 ${escapeHtml(f.name)}</span>
+
+            <div style="position:relative;">
+
+                <div style="
+                    position:relative;
+                    padding:13px 14px;
+                    border-radius:14px;
+                    background:linear-gradient(135deg,rgba(30,45,69,.86),rgba(15,23,42,.90));
+                    border:1px solid rgba(99,179,237,.24);
+                    border-left:4px solid ${f.read ? '#64748b' : '#3b82f6'};
+                    box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 16px rgba(59,130,246,.08);
+                ">
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:flex-start;
+                        gap:12px;
+                        flex-wrap:wrap;
+                    ">
+                        <div>
+                            <div style="
+                                display:flex;
+                                align-items:center;
+                                gap:8px;
+                                flex-wrap:wrap;
+                                margin-bottom:5px;
+                            ">
+                                ${!f.read ? '<span style="background:rgba(74,222,128,.16);border:1px solid rgba(74,222,128,.42);color:#4ade80;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:800;">НОВЕ</span>' : ''}
+
+                                <span style="
+                                    color:#93c5fd;
+                                    font-weight:800;
+                                    font-size:14px;
+                                ">
+                                    👤 ${escapeHtml(f.name || 'Анонім')}
+                                </span>
+                            </div>
+
+                            <div style="
+                                color:#8892a4;
+                                font-size:12px;
+                                line-height:1.4;
+                            ">
+                                🕒 ${dateStr}
+                            </div>
+                        </div>
+
+                        <button onclick="event.stopPropagation();deleteFeedback('${escapeHtml(f.id)}')" style="
+                            background:rgba(248,113,113,.10);
+                            border:1px solid rgba(248,113,113,.35);
+                            border-radius:8px;
+                            color:#f87171;
+                            font-size:12px;
+                            padding:6px 10px;
+                            cursor:pointer;
+                            font-weight:700;
+                        ">
+                            🗑 Видалити
+                        </button>
+                    </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:8px;">
-    <span style="color:#8892a4;font-size:12px;">${dateStr}</span>
-    <button onclick="event.stopPropagation();deleteFeedback('${escapeHtml(f.id)}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;font-size:12px;padding:3px 8px;cursor:pointer;">🗑</button>
-</div>
-    
+
+                <div style="
+                    width:2px;
+                    height:14px;
+                    margin-left:25px;
+                    background:linear-gradient(180deg,rgba(59,130,246,.55),rgba(59,130,246,.12));
+                "></div>
+
+                <div style="
+                    padding:14px 15px;
+                    border-radius:14px;
+                    background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(30,45,69,.60));
+                    border:1px solid rgba(99,179,237,.22);
+                    border-left:4px solid #3b82f6;
+                    box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 16px rgba(59,130,246,.08);
+                ">
+                    <div style="
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
+                        color:#93c5fd;
+                        font-size:12px;
+                        font-weight:800;
+                        text-transform:uppercase;
+                        letter-spacing:.4px;
+                        margin-bottom:8px;
+                    ">
+                        💬 Текст відгуку / пропозиції
+                    </div>
+
+                    <div style="
+                        color:#e2e8f0;
+                        font-size:14px;
+                        line-height:1.65;
+                        white-space:pre-wrap;
+                    ">${escapeHtml(f.text || 'Текст відгуку відсутній')}</div>
                 </div>
+
             </div>
-            <div style="color:#cbd5e1;font-size:14px;line-height:1.6;white-space:pre-wrap;">${escapeHtml(f.text)}</div>
         </div>`;
     }).join('');
-}
 
+    updateFeedbackStats();
+}
 function updateFeedbackStats() {
     const totalEl = document.getElementById('fb-stat-total');
     const newEl = document.getElementById('fb-stat-new');
