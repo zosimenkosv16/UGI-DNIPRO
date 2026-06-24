@@ -2700,15 +2700,17 @@ function openMobileOverlay(tabId) {
 // Примусово відкриваємо вміст вкладки у мобільному оверлеї
 body.querySelectorAll('.content').forEach(function(content) {
     content.style.display = 'block';
+    content.style.visibility = 'visible';
+    content.style.opacity = '1';
 });
 
 body.querySelectorAll('.card').forEach(function(card) {
     card.onclick = null;
     card.style.cursor = 'default';
+    card.style.overflow = 'visible';
 });
 
 body.querySelectorAll('a').forEach(function(a) {
-    a.style.display = 'block';
     a.style.visibility = 'visible';
     a.style.opacity = '1';
     a.addEventListener('click', function(e) {
@@ -2716,6 +2718,60 @@ body.querySelectorAll('a').forEach(function(a) {
     });
 });
 
+// Окреме виправлення для вкладки "Новини та соціальні мережі"
+if (tabId === 'news') {
+    body.querySelectorAll('.article').forEach(function(article) {
+        article.style.display = 'block';
+        article.style.visibility = 'visible';
+        article.style.opacity = '1';
+        article.style.minHeight = 'auto';
+        article.style.height = 'auto';
+        article.style.overflow = 'visible';
+        article.style.padding = '0';
+        article.style.marginTop = '14px';
+    });
+
+    body.querySelectorAll('.article a').forEach(function(a) {
+        a.style.display = 'block';
+        a.style.width = '100%';
+        a.style.minHeight = 'auto';
+        a.style.height = 'auto';
+        a.style.padding = '16px';
+        a.style.color = '#e2e8f0';
+        a.style.textDecoration = 'none';
+        a.style.visibility = 'visible';
+        a.style.opacity = '1';
+    });
+
+    body.querySelectorAll('.article a h3').forEach(function(h3) {
+        h3.style.display = 'block';
+        h3.style.visibility = 'visible';
+        h3.style.opacity = '1';
+        h3.style.color = '#ffffff';
+        h3.style.fontSize = '16px';
+        h3.style.lineHeight = '1.35';
+        h3.style.marginBottom = '8px';
+    });
+
+    body.querySelectorAll('.article a p').forEach(function(p) {
+        p.style.display = 'block';
+        p.style.visibility = 'visible';
+        p.style.opacity = '1';
+        p.style.color = '#cbd5e1';
+        p.style.fontSize = '14px';
+        p.style.lineHeight = '1.55';
+        p.style.margin = '0 0 12px';
+    });
+
+    body.querySelectorAll('.article a span').forEach(function(span) {
+        span.style.display = 'inline-flex';
+        span.style.visibility = 'visible';
+        span.style.opacity = '1';
+        span.style.alignItems = 'center';
+        span.style.justifyContent = 'center';
+        span.style.marginTop = '8px';
+    });
+}
     // Перейменовуємо id щоб уникнути дублікатів у DOM
     body.querySelectorAll('[id]').forEach(function(el) {
         el.id = 'mob_' + el.id;
@@ -2772,8 +2828,10 @@ body.querySelectorAll('a').forEach(function(a) {
         }
     });
 
-    // Ініціалізуємо акордеони статей всередині оверлею
+    // Ініціалізуємо акордеони статей тільки для адмінпрактики
+if (tabId === 'adminPractice') {
     initArticleAccordionsIn(body);
+}
 
     // Якщо це вкладка "Подати звернення" — переприв'язуємо кнопку до мобільної версії
     if (tabId === 'appeal') {
