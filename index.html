@@ -2697,6 +2697,24 @@ function openMobileOverlay(tabId) {
 
     // Клонуємо вміст вкладки
     body.innerHTML = tab.innerHTML;
+// Примусово відкриваємо вміст вкладки у мобільному оверлеї
+body.querySelectorAll('.content').forEach(function(content) {
+    content.style.display = 'block';
+});
+
+body.querySelectorAll('.card').forEach(function(card) {
+    card.onclick = null;
+    card.style.cursor = 'default';
+});
+
+body.querySelectorAll('a').forEach(function(a) {
+    a.style.display = 'block';
+    a.style.visibility = 'visible';
+    a.style.opacity = '1';
+    a.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+});
 
     // Перейменовуємо id щоб уникнути дублікатів у DOM
     body.querySelectorAll('[id]').forEach(function(el) {
