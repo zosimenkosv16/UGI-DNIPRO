@@ -3775,8 +3775,10 @@ function renderFeedback() {
                     <span style="color:#93c5fd;font-weight:600;font-size:14px;">💬 ${escapeHtml(f.name)}</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="color:#8892a4;font-size:12px;">${dateStr}</span>
-                    <button onclick="event.stopPropagation();deleteFeedback('${escapeHtml(f.id)}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;font-size:12px;padding:3px 8px;cursor:pointer;">🗑</button>
+    <span style="color:#8892a4;font-size:12px;">${dateStr}</span>
+    <button onclick="event.stopPropagation();deleteFeedback('${escapeHtml(f.id)}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;font-size:12px;padding:3px 8px;cursor:pointer;">🗑</button>
+</div>
+    
                 </div>
             </div>
             <div style="color:#cbd5e1;font-size:14px;line-height:1.6;white-space:pre-wrap;">${escapeHtml(f.text)}</div>
@@ -3796,8 +3798,18 @@ function markFeedbackRead(id) {
 }
 function deleteFeedback(id) {
     if (!confirm('Видалити цей відгук?')) return;
-    if (feedbackRef) feedbackRef.child(id).remove();
+
+    if (!feedbackRef) {
+        alert('Помилка з’єднання з базою даних');
+        return;
+    }
+
+    feedbackRef.child(id).remove()
+        .catch(function(e) {
+            alert('Помилка видалення: ' + e.message);
+        });
 }
+
 function clearAllFeedback() {
     if (!confirm('Видалити ВСІ відгуки?')) return;
     if (feedbackRef) feedbackRef.remove();
