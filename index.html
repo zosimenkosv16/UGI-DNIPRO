@@ -3694,9 +3694,10 @@ function subscribeVisitorStats() {
 
     // Загальна кількість відвідувань
     db.ref('visitors/total').on('value', snap => {
-        cachedVisitorStats.total = snap.val() || 0;
-        updateVisitorStatsUI();
-    });
+    cachedVisitorStats.total = snap.val() || 0;
+    cachedVisitorStats.year = cachedVisitorStats.total;
+    updateVisitorStatsUI();
+});
 
     // Унікальні відвідувачі
     db.ref('visitors/unique').on('value', snap => {
@@ -3712,11 +3713,10 @@ function subscribeVisitorStats() {
         const todayStr = now.toDateString();
         const weekAgo  = new Date(now - 7*24*60*60*1000);
         const monthAgo = new Date(now - 30*24*60*60*1000);
-        const yearAgo  = new Date(now - 365*24*60*60*1000);
         cachedVisitorStats.today = visits.filter(v => new Date(v.date).toDateString() === todayStr).length;
         cachedVisitorStats.week  = visits.filter(v => new Date(v.date) >= weekAgo).length;
         cachedVisitorStats.month = visits.filter(v => new Date(v.date) >= monthAgo).length;
-        cachedVisitorStats.year  = visits.filter(v => new Date(v.date) >= yearAgo).length;
+        cachedVisitorStats.year = cachedVisitorStats.total;
         updateVisitorStatsUI();
     });
 
@@ -3767,6 +3767,7 @@ function renderTabStats() {
 // ===== ЕКСПОРТ У EXCEL =====
 function exportExcelReport() {
     const vs   = cachedVisitorStats;
+    vs.year = vs.total || 0;
     const ts   = cachedTabStats;
     const now  = new Date();
     const dateStr = now.toLocaleDateString('uk-UA', {year:'numeric',month:'long',day:'numeric'});
@@ -3791,7 +3792,7 @@ function exportExcelReport() {
 <tr><td>Сьогодні</td><td>${vs.today}</td></tr>
 <tr><td>За тиждень (7 днів)</td><td>${vs.week}</td></tr>
 <tr><td>За місяць (30 днів)</td><td>${vs.month}</td></tr>
-<tr><td>За рік (365 днів)</td><td>${vs.year}</td></tr>
+<tr><td>За рік</td><td>${vs.year}</td></tr>
 </table>
 
 <br><br>
@@ -4491,6 +4492,7 @@ function downloadWordFile(filename, title, bodyHtml) {
 
 function openSiteStatsPdfReport() {
     const vs = cachedVisitorStats || {};
+    vs.year = vs.total || 0;
     const tabs = cachedTabStats || {};
 
     const visitRows = [
