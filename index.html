@@ -3792,7 +3792,6 @@ function exportExcelReport() {
 <tr><td>За тиждень (7 днів)</td><td>${vs.week}</td></tr>
 <tr><td>За місяць (30 днів)</td><td>${vs.month}</td></tr>
 <tr><td>За рік (365 днів)</td><td>${vs.year}</td></tr>
-<tr><td>Унікальних відвідувачів</td><td>${vs.unique}</td></tr>
 </table>
 
 <br><br>
@@ -4511,13 +4510,14 @@ function openSiteStatsPdfReport() {
     const maxTab = Math.max(...tabRows.map(r => r.value), 1);
 
     const visitCards = `
-        <div class="cards">
-            <div class="stat-card"><span>Усього</span><b>${vs.total || 0}</b></div>
-            <div class="stat-card"><span>Сьогодні</span><b>${vs.today || 0}</b></div>
-            <div class="stat-card"><span>7 днів</span><b>${vs.week || 0}</b></div>
-            <div class="stat-card"><span>30 днів</span><b>${vs.month || 0}</b></div>
-                    </div>
-    `;
+    <div class="cards">
+        <div class="stat-card"><span>Усього</span><b>${vs.total || 0}</b></div>
+        <div class="stat-card"><span>Сьогодні</span><b>${vs.today || 0}</b></div>
+        <div class="stat-card"><span>7 днів</span><b>${vs.week || 0}</b></div>
+        <div class="stat-card"><span>30 днів</span><b>${vs.month || 0}</b></div>
+        <div class="stat-card"><span>За рік</span><b>${vs.year || 0}</b></div>
+    </div>
+`;
 
     const visitChart = visitRows.map(r => {
         const width = Math.max((r.value / maxVisit) * 100, r.value > 0 ? 4 : 0);
