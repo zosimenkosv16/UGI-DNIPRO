@@ -3689,7 +3689,6 @@ function subscribeVisitorStats() {
     // Загальна кількість відвідувань
     db.ref('visitors/total').on('value', snap => {
     cachedVisitorStats.total = snap.val() || 0;
-    cachedVisitorStats.year = cachedVisitorStats.total;
     updateVisitorStatsUI();
 });
 
@@ -3699,18 +3698,35 @@ function subscribeVisitorStats() {
         updateVisitorStatsUI();
     });
 
-    // Відвідування за період (останні 500 записів)
-    db.ref('visitors/visits').limitToLast(5000).on('value', snap => {
+    // Відвідування за період (останні 50000 записів)
+    db.ref('visitors/visits').limitToLast(50000).on('value', snap => {
         const data = snap.val() || {};
         const visits = Object.values(data);
         const now      = new Date();
         const todayStr = now.toDateString();
-        const weekAgo  = new Date(now - 7*24*60*60*1000);
-        const monthAgo = new Date(now - 30*24*60*60*1000);
-        cachedVisitorStats.today = visits.filter(v => new Date(v.date).toDateString() === todayStr).length;
-        cachedVisitorStats.week  = visits.filter(v => new Date(v.date) >= weekAgo).length;
-        cachedVisitorStats.month = visits.filter(v => new Date(v.date) >= monthAgo).length;
-        cachedVisitorStats.year = cachedVisitorStats.total;
+        const weekAgo  = new Date(now - 7 * 24 * 60 * 60 * 1000);
+const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+const yearAgo  = new Date(now - 365 * 24 * 60 * 60 * 1000);
+
+cachedVisitorStats.today = visits.filter(v => {
+    const d = new Date(v.date);
+    return !isNaN(d) && d.toDateString() === todayStr;
+}).length;
+
+cachedVisitorStats.week = visits.filter(v => {
+    const d = new Date(v.date);
+    return !isNaN(d) && d >= weekAgo;
+}).length;
+
+cachedVisitorStats.month = visits.filter(v => {
+    const d = new Date(v.date);
+    return !isNaN(d) && d >= monthAgo;
+}).length;
+
+cachedVisitorStats.year = visits.filter(v => {
+    const d = new Date(v.date);
+    return !isNaN(d) && d >= yearAgo;
+}).length;
         updateVisitorStatsUI();
     });
 
@@ -3761,7 +3777,6 @@ function renderTabStats() {
 // ===== ЕКСПОРТ У EXCEL =====
 function exportExcelReport() {
     const vs   = cachedVisitorStats;
-    vs.year = vs.total || 0;
     const ts   = cachedTabStats;
     const now  = new Date();
     const dateStr = now.toLocaleDateString('uk-UA', {year:'numeric',month:'long',day:'numeric'});
@@ -4486,7 +4501,6 @@ function downloadWordFile(filename, title, bodyHtml) {
 
 function openSiteStatsPdfReport() {
     const vs = cachedVisitorStats || {};
-    vs.year = vs.total || 0;
     const tabs = cachedTabStats || {};
 
     const visitRows = [
