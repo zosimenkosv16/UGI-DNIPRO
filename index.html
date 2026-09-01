@@ -2935,6 +2935,7 @@
                 <div style="color:#8892a4;font-size:12px;text-transform:uppercase;letter-spacing:.8px;">📊 Відвідуваність сайту</div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
                     <button onclick="exportExcelReport()" style="padding:8px 18px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.4);border-radius:8px;color:#4ade80;font-size:13px;cursor:pointer;font-weight:600;">📥 Експорт у Excel</button>
+<button onclick="openEditStatsModal()" style="padding:8px 18px;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.4);border-radius:8px;color:#a5b4fc;font-size:13px;cursor:pointer;font-weight:600;">Статистика</button>
                     <button onclick="clearVisitorStats()" style="padding:8px 18px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:8px;color:#f87171;font-size:13px;cursor:pointer;font-weight:600;">🗑 Очистити статистику</button>
                 </div>
             </div>
@@ -3759,61 +3760,62 @@ function trackTabView(tabId) {
 // Кешовані дані статистики (оновлюються через Firebase listener у showCabinet)
 let cachedVisitorStats = { total: 0, today: 0, week: 0, month: 0, year: 0, unique: 0 };
 let cachedTabStats = {};
+let cachedVisitorOverrides = {};
+let cachedVisitsData = {};
 
 function subscribeVisitorStats() {
     if (!db) return;
 
-    // Загальна кількість відвідувань
     db.ref('visitors/total').on('value', snap => {
-    cachedVisitorStats.total = snap.val() || 0;
-    updateVisitorStatsUI();
-});
+        cachedVisitorStats.total = snap.val() || 0;
+        updateVisitorStatsUI();
+    });
 
-    // Унікальні відвідувачі
     db.ref('visitors/unique').on('value', snap => {
         cachedVisitorStats.unique = snap.val() ? Object.keys(snap.val()).length : 0;
         updateVisitorStatsUI();
     });
 
-    // Відвідування за період (останні 50000 записів)
-    db.ref('visitors/visits').limitToLast(50000).on('value', snap => {
-        const data = snap.val() || {};
-        const visits = Object.values(data);
-        const now      = new Date();
-        const todayStr = now.toDateString();
-        const weekAgo  = new Date(now - 7 * 24 * 60 * 60 * 1000);
-const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
-const yearAgo  = new Date(now - 365 * 24 * 60 * 60 * 1000);
-
-cachedVisitorStats.today = visits.filter(v => {
-    const d = new Date(v.date);
-    return !isNaN(d) && d.toDateString() === todayStr;
-}).length;
-
-cachedVisitorStats.week = visits.filter(v => {
-    const d = new Date(v.date);
-    return !isNaN(d) && d >= weekAgo;
-}).length;
-
-cachedVisitorStats.month = visits.filter(v => {
-    const d = new Date(v.date);
-    return !isNaN(d) && d >= monthAgo;
-}).length;
-
-cachedVisitorStats.year = visits.filter(v => {
-    const d = new Date(v.date);
-    return !isNaN(d) && d >= yearAgo;
-}).length;
-        updateVisitorStatsUI();
+    // Ручні перевизначення (мають пріоритет над автопідрахунком)
+    db.ref('visitors/overrides').on('value', snap => {
+        cachedVisitorOverrides = snap.val() || {};
+        recomputePeriodStats();
     });
 
-    // Статистика вкладок
+    db.ref('visitors/visits').limitToLast(50000).on('value', snap => {
+        cachedVisitsData = snap.val() || {};
+        recomputePeriodStats();
+    });
+
     db.ref('visitors/tabStats').on('value', snap => {
         cachedTabStats = snap.val() || {};
         renderTabStats();
     });
 }
 
+function recomputePeriodStats() {
+    const visits = Object.values(cachedVisitsData || {});
+    const now = new Date();
+    const todayStr = now.toDateString();
+    const weekAgo  = new Date(now - 7 * 24 * 60 * 60 * 1000);
+    const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+    const yearAgo  = new Date(now - 365 * 24 * 60 * 60 * 1000);
+
+    const computed = {
+        today: visits.filter(v => { const d = new Date(v.date); return !isNaN(d) && d.toDateString() === todayStr; }).length,
+        week:  visits.filter(v => { const d = new Date(v.date); return !isNaN(d) && d >= weekAgo; }).length,
+        month: visits.filter(v => { const d = new Date(v.date); return !isNaN(d) && d >= monthAgo; }).length,
+        year:  visits.filter(v => { const d = new Date(v.date); return !isNaN(d) && d >= yearAgo; }).length
+    };
+
+    ['today','week','month','year'].forEach(key => {
+        cachedVisitorStats[key] = cachedVisitorOverrides.hasOwnProperty(key)
+            ? cachedVisitorOverrides[key]
+            : computed[key];
+    });
+
+    updateVisitorStatsUI();
+}
 function updateVisitorStatsUI() {
     const vs = cachedVisitorStats;
     const elTotal  = document.getElementById('stat-visitors-total');
@@ -3901,7 +3903,121 @@ ${Object.entries(TAB_LABELS).sort((a,b)=>(ts[b[0]]||0)-(ts[a[0]]||0)).map(([id, 
     a.click();
     URL.revokeObjectURL(url);
 }
+// =====  СТАТИСТИКА =====
+function openEditStatsModal() {
+    if (!db) { alert('Помилка: немає з\'єднання з базою даних.'); return; }
 
+    const vs = cachedVisitorStats;
+    const ts = cachedTabStats;
+
+    const visitFields = [
+        { key: 'total',  label: 'Всього' },
+        { key: 'today',  label: 'Сьогодні' },
+        { key: 'week',   label: 'За тиждень' },
+        { key: 'month',  label: 'За місяць' },
+        { key: 'year',   label: 'За рік' }
+    ];
+
+    const tabRows = Object.entries(TAB_LABELS).map(([id, label]) => {
+        return `
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <label style="flex:1;color:#cbd5e1;font-size:13px;">${label}</label>
+                <input type="number" id="edit-tab-${id}" value="${ts[id] || 0}" min="0"
+                    style="width:110px;padding:8px 10px;background:#1a2235;border:1px solid rgba(99,179,237,.25);border-radius:8px;color:#e2e8f0;font-size:14px;">
+            </div>`;
+    }).join('');
+
+    const visitRows = visitFields.map(f => `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <label style="flex:1;color:#cbd5e1;font-size:13px;">${f.label}</label>
+            <input type="number" id="edit-visit-${f.key}" value="${vs[f.key] || 0}" min="0"
+                style="width:110px;padding:8px 10px;background:#1a2235;border:1px solid rgba(99,179,237,.25);border-radius:8px;color:#e2e8f0;font-size:14px;">
+        </div>`).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'edit-stats-overlay';
+    modal.style.cssText = 'display:flex;position:fixed;inset:0;z-index:10005;background:rgba(0,0,0,.8);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:16px;';
+    modal.innerHTML = `
+        <div style="background:#111827;border:1px solid rgba(99,179,237,.25);border-radius:16px;padding:26px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 0 60px rgba(59,130,246,.25);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <div style="color:#e2e8f0;font-size:18px;font-weight:700;">✏️ Редагування статистики</div>
+                <button onclick="closeEditStatsModal()" style="background:none;border:none;color:#8892a4;font-size:22px;cursor:pointer;line-height:1;">×</button>
+            </div>
+
+            <div style="color:#93c5fd;font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Відвідуваність</div>
+            ${visitRows}
+
+            <div style="color:#93c5fd;font-size:13px;font-weight:700;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.5px;">Перегляди розділів</div>
+            ${tabRows}
+
+            <div id="edit-stats-error" style="display:none;color:#f87171;font-size:13px;padding:10px 14px;background:rgba(248,113,113,.1);border-radius:8px;border:1px solid rgba(248,113,113,.3);margin-top:10px;"></div>
+
+            <button onclick="saveEditStats()" style="width:100%;margin-top:16px;padding:13px;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">
+                💾 Зберегти
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function closeEditStatsModal() {
+    const modal = document.getElementById('edit-stats-overlay');
+    if (modal) modal.remove();
+}
+
+function saveEditStats() {
+    const errBox = document.getElementById('edit-stats-error');
+    errBox.style.display = 'none';
+
+    // total пишемо напряму
+    const totalEl = document.getElementById('edit-visit-total');
+    const totalVal = parseInt(totalEl.value, 10);
+    if (isNaN(totalVal) || totalVal < 0) {
+        errBox.textContent = 'Перевірте значення поля "Всього" — має бути невід’ємне число.';
+        errBox.style.display = 'block';
+        return;
+    }
+
+    const updates = {};
+    updates['visitors/total'] = totalVal;
+
+    // today/week/month/year — як ручні перевизначення
+    const overrides = {};
+    for (const key of ['today', 'week', 'month', 'year']) {
+        const el = document.getElementById('edit-visit-' + key);
+        const val = parseInt(el.value, 10);
+        if (isNaN(val) || val < 0) {
+            errBox.textContent = 'Перевірте значення полів відвідуваності — мають бути невід’ємні числа.';
+            errBox.style.display = 'block';
+            return;
+        }
+        overrides[key] = val;
+    }
+    updates['visitors/overrides'] = overrides;
+
+    const tabStats = {};
+    for (const id of Object.keys(TAB_LABELS)) {
+        const el = document.getElementById('edit-tab-' + id);
+        const val = parseInt(el.value, 10);
+        if (isNaN(val) || val < 0) {
+            errBox.textContent = 'Перевірте значення полів переглядів розділів — мають бути невід’ємні числа.';
+            errBox.style.display = 'block';
+            return;
+        }
+        tabStats[id] = val;
+    }
+    updates['visitors/tabStats'] = tabStats;
+
+    db.ref().update(updates)
+        .then(() => {
+            closeEditStatsModal();
+            alert('✅ Статистику оновлено.');
+        })
+        .catch(e => {
+            errBox.textContent = '❌ Помилка: ' + e.message;
+            errBox.style.display = 'block';
+        });
+}
 function clearVisitorStats() {
     if (!confirm('Видалити ВСЮ статистику відвідувань? Цю дію неможливо скасувати.')) return;
     if (!db) { alert('Помилка: немає з\'єднання з базою даних.'); return; }
